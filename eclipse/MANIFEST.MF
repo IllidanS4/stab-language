@@ -16,5 +16,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: libs/stabrt.jar,
  libs/stabc.jar,
- libs/asm-3.3.jar,
+ libs/asm-5.2.jar,
  .

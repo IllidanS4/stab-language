@@ -86,7 +86,7 @@ package stab.tools.build {
 
 			var args = new ArrayList<String>();
 			args.add("-al:bin/stabal.jar");
-			args.add("-cp:bin/stabrt.jar;bin/asm-3.3.jar");
+			args.add("-cp:bin/stabrt.jar;bin/asm-5.2.jar");
 			args.add("-resources:compiler/resources");
 			args.add("-manifest:compiler/MANIFEST.MF");
 			args.add("-out:compiler/stabc.jar");
@@ -116,7 +116,7 @@ package stab.tools.build {
 			
 			var args = new ArrayList<String>();
 			args.add("-al:bin/stabal.jar");
-			args.add("-cp:bin/stabrt.jar;bin/junit-4.8.1.jar;bin/asm-3.3.jar;compiler/stabc.jar");
+			args.add("-cp:bin/stabrt.jar;bin/junit-4.8.1.jar;bin/asm-5.2.jar;compiler/stabc.jar");
 			args.add("-out:tests/tests.jar");
 			addSourceFiles(new File("tests/sources"), args);
 			
@@ -175,7 +175,7 @@ package stab.tools.build {
 			var pluginDir = new File("eclipse/eclipse/plugins");
 			var files = pluginDir.listFiles();
 			var sb = new StringBuilder();
-			sb.append("-cp:bin/stabrt.jar;bin/stabc.jar;bin/asm-3.3.jar");
+			sb.append("-cp:bin/stabrt.jar;bin/stabc.jar;bin/asm-5.2.jar");
 			foreach (var file in files) {
 				if (!file.isDirectory() && file.getName().endsWith(".jar")) {
 					sb.append(';');
@@ -197,7 +197,7 @@ package stab.tools.build {
 
 			var args = new ArrayList<String>();
 			args.add("-al:bin/stabal.jar");
-			args.add("-cp:bin/stabrt.jar;bin/asm-3.3.jar;bin/stabc.jar");
+			args.add("-cp:bin/stabrt.jar;bin/asm-5.2.jar;bin/stabc.jar");
 			args.add("-manifest:tools/build/MANIFEST.MF");
 			args.add("-out:bin/build.jar");
 			addSourceFiles(new File("tools/build"), args);

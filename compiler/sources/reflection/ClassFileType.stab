@@ -597,13 +597,14 @@ package stab.reflection {
             private FieldInfoBuilder fieldInfoBuilder;
             private MethodInfoBuilder methodInfoBuilder;
 
-            OutlineVisitor(ClassFileType classFileType) {
+            OutlineVisitor(ClassFileType classFileType)
+                    : super(Opcodes.ASM5) {
                 this.classFileType = classFileType;
                 this.fieldInfoBuilder = new FieldInfoBuilder();
                 this.methodInfoBuilder = new MethodInfoBuilder();
             }
         
-            public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+            public override void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
                 classFileType.modifiers = access;
                 var classInfo = new RawClassInfo();
                 classFileType.classInfo = classInfo;
@@ -617,7 +618,7 @@ package stab.reflection {
                 }
             }
             
-            public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+            public override AnnotationVisitor visitAnnotation(String desc, boolean visible) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), visible);
                 if (classFileType.classInfo.annotations == null) {
                 	classFileType.classInfo.annotations = new ArrayList<RawAnnotationValue>();
@@ -626,7 +627,7 @@ package stab.reflection {
                 return new RawAnnotationValueBuilder(annotation);
             }
             
-            public FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
+            public override FieldVisitor visitField(int access, String name, String desc, String signature, Object value) {
                 var field = new RawFieldInfo();
                 field.modifiers = access;
                 field.name = name;
@@ -642,7 +643,7 @@ package stab.reflection {
                 return fieldInfoBuilder;
             }
             
-            public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+            public override MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
                 var method = new RawMethodInfo();
                 method.modifiers = access;
                 method.name = name;
@@ -669,7 +670,7 @@ package stab.reflection {
                 return methodInfoBuilder;
             }
             
-            public void visitInnerClass(String name, String outerName, String innerName, int access) {
+            public override void visitInnerClass(String name, String outerName, String innerName, int access) {
                 if (!name.equals(classFileType.FullName)) {
                     // Inner classes with outerName == null are method classes: ignore them.
                     if (outerName != null && outerName.equals(classFileType.FullName)) {
@@ -681,10 +682,10 @@ package stab.reflection {
                 }
             }
             
-            public void visitEnd() {}
-            public void visitAttribute(Attribute attr) {}
-            public void visitOuterClass(String owner, String name, String desc) {}
-            public void visitSource(String source, String debug) {}
+            public override void visitEnd() {}
+            public override void visitAttribute(Attribute attr) {}
+            public override void visitOuterClass(String owner, String name, String desc) {}
+            public override void visitSource(String source, String debug) {}
         }
         
         private class RawClassInfo {
@@ -726,7 +727,11 @@ package stab.reflection {
         private class FieldInfoBuilder : FieldVisitor {
             RawFieldInfo field;
 
-            public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+            public FieldInfoBuilder()
+                    : super(Opcodes.ASM5) {
+            }
+
+            public override AnnotationVisitor visitAnnotation(String desc, boolean visible) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), visible);
                 if (field.annotations == null) {
                 	field.annotations = new ArrayList<RawAnnotationValue>();
@@ -735,14 +740,18 @@ package stab.reflection {
                 return new RawAnnotationValueBuilder(annotation);
             }
 
-            public void visitAttribute(Attribute attr) {}
-            public void visitEnd() {}
+            public override void visitAttribute(Attribute attr) {}
+            public override void visitEnd() {}
         }
         
         private class MethodInfoBuilder : MethodVisitor {
             RawMethodInfo method;
+
+            public MethodInfoBuilder()
+                    : super(Opcodes.ASM5) {
+            }
             
-            public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+            public override AnnotationVisitor visitAnnotation(String desc, boolean visible) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), visible);
                 if (method.annotations == null) {
                 	method.annotations = new ArrayList<RawAnnotationValue>();
@@ -751,11 +760,11 @@ package stab.reflection {
                 return new RawAnnotationValueBuilder(annotation);
             }
 
-            public AnnotationVisitor visitAnnotationDefault() {
+            public override AnnotationVisitor visitAnnotationDefault() {
                 return new RawAnnotationDefaultValueBuilder(method);
             }
 
-            public AnnotationVisitor visitParameterAnnotation(int parameter, String desc, boolean visible) {
+            public override AnnotationVisitor visitParameterAnnotation(int parameter, String desc, boolean visible) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), visible);
                 var par = method.parameters.get(parameter);
                 if (par.annotations == null) {
@@ -765,117 +774,120 @@ package stab.reflection {
                 return new RawAnnotationValueBuilder(annotation);
             }
             
-            public void visitAttribute(Attribute attr) {}
-            public void visitCode() {}
-            public void visitEnd() {}
-            public void visitFieldInsn(int opcode, String owner, String name, String desc) {}
-            public void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {}
-            public void visitIincInsn(int var, int increment) {}
-            public void visitInsn(int opcode) {}
-            public void visitIntInsn(int opcode, int operand) {}
-            public void visitJumpInsn(int opcode, Label label) {}
-            public void visitLabel(Label label) {}
-            public void visitLdcInsn(Object cst) {}
-            public void visitLineNumber(int line, Label start) {}
-            public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {}
-            public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {}
-            public void visitMaxs(int maxStack, int maxLocals) {}
-            public void visitMethodInsn(int opcode, String owner, String name, String desc) {}
-            public void visitMultiANewArrayInsn(String desc, int dims) {}
+            public override void visitAttribute(Attribute attr) {}
+            public override void visitCode() {}
+            public override void visitEnd() {}
+            public override void visitFieldInsn(int opcode, String owner, String name, String desc) {}
+            public override void visitFrame(int type, int nLocal, Object[] local, int nStack, Object[] stack) {}
+            public override void visitIincInsn(int var, int increment) {}
+            public override void visitInsn(int opcode) {}
+            public override void visitIntInsn(int opcode, int operand) {}
+            public override void visitJumpInsn(int opcode, Label label) {}
+            public override void visitLabel(Label label) {}
+            public override void visitLdcInsn(Object cst) {}
+            public override void visitLineNumber(int line, Label start) {}
+            public override void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {}
+            public override void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {}
+            public override void visitMaxs(int maxStack, int maxLocals) {}
+            public override void visitMethodInsn(int opcode, String owner, String name, String desc) {}
+            public override void visitMultiANewArrayInsn(String desc, int dims) {}
             public void visitTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {}
-            public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {}
-            public void visitTypeInsn(int opcode, String type) {}
-            public void visitVarInsn(int opcode, int var) {}
+            public override void visitTryCatchBlock(Label start, Label end, Label handler, String type) {}
+            public override void visitTypeInsn(int opcode, String type) {}
+            public override void visitVarInsn(int opcode, int var) {}
         }
         
         private class ArrayVisitor : AnnotationVisitor {
             private RawArrayValue array;
             
-            ArrayVisitor(RawArrayValue array) {
+            ArrayVisitor(RawArrayValue array)
+                    : super(Opcodes.ASM5) {
                 this.array = array;
             }
 
-            public void visit(String name, Object value) {
+            public override void visit(String name, Object value) {
                 array.elements.add(buildAnnotationArgument(value));
             }
 
-            public AnnotationVisitor visitAnnotation(String name, String desc) {
+            public override AnnotationVisitor visitAnnotation(String name, String desc) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), false);
                 array.elements.add(annotation);
                 return new RawAnnotationValueBuilder(annotation);
             }
 
-            public AnnotationVisitor visitArray(String name) {
+            public override AnnotationVisitor visitArray(String name) {
                 var array = new RawArrayValue();
                 this.array.elements.add(array);
                 return new ArrayVisitor(array);
             }
 
-            public void visitEnum(String name, String desc, String value) {
+            public override void visitEnum(String name, String desc, String value) {
                 array.elements.add(new RawEnumValue(AsmType.getType(desc), value));
             }
 
-            public void visitEnd() {}
+            public override void visitEnd() {}
         }
 
         private class RawAnnotationValueBuilder : AnnotationVisitor {
             private RawAnnotationValue annotation;
             
-            RawAnnotationValueBuilder(RawAnnotationValue annotation) {
+            RawAnnotationValueBuilder(RawAnnotationValue annotation)
+                    : super(Opcodes.ASM5) {
                 this.annotation = annotation;
             }
             
-            public void visit(String name, Object value) {
+            public override void visit(String name, Object value) {
                 annotation.arguments.put(name, buildAnnotationArgument(value));
             }
 
-            public AnnotationVisitor visitAnnotation(String name, String desc) {
+            public override AnnotationVisitor visitAnnotation(String name, String desc) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), false);
                 this.annotation.arguments.put(name, annotation);
                 return new RawAnnotationValueBuilder(annotation);
             }
 
-            public AnnotationVisitor visitArray(String name) {
+            public override AnnotationVisitor visitArray(String name) {
                 var array = new RawArrayValue();
                 annotation.arguments.put(name, array);
                 return new ArrayVisitor(array);
             }
 
-            public void visitEnum(String name, String desc, String value) {
+            public override void visitEnum(String name, String desc, String value) {
                 annotation.arguments.put(name, new RawEnumValue(AsmType.getType(desc), value));
             }
 
-            public void visitEnd() {}
+            public override void visitEnd() {}
         }
 
         private class RawAnnotationDefaultValueBuilder : AnnotationVisitor {
             private RawMethodInfo method;
             
-            public RawAnnotationDefaultValueBuilder(RawMethodInfo method) {
+            public RawAnnotationDefaultValueBuilder(RawMethodInfo method)
+                    : super(Opcodes.ASM5) {
                 this.method = method;
             }
 
-            public void visit(String name, Object value) {
+            public override void visit(String name, Object value) {
                 this.method.defaultValue = buildAnnotationArgument(value);
             }
 
-            public AnnotationVisitor visitAnnotation(String name, String desc) {
+            public override AnnotationVisitor visitAnnotation(String name, String desc) {
                 var annotation = new RawAnnotationValue(AsmType.getType(desc), false);
                 this.method.defaultValue = annotation;
                 return new RawAnnotationValueBuilder(annotation);
             }
 
-            public AnnotationVisitor visitArray(String name) {
+            public override AnnotationVisitor visitArray(String name) {
                 var array = new RawArrayValue();
                 this.method.defaultValue = array;
                 return new ArrayVisitor(array);
             }
 
-            public void visitEnum(String name, String desc, String value) {
+            public override void visitEnum(String name, String desc, String value) {
                 this.method.defaultValue = new RawEnumValue(AsmType.getType(desc), value);
             }
 
-            public void visitEnd() {}
+            public override void visitEnd() {}
         }
 
         private abstract class RawAnnotationArgument {
