@@ -1,5 +1,16 @@
+
+/.gradle
+/build
 /out
 /.idea/*
+
+/buildSrc/.gradle
+/buildSrc/build
+/buildSrc/out
+
+/runtime/.gradle
+/runtime/build
+/runtime/out
 
 /tests/resources/ExpressionTreesTest/generated
 /tests/resources/ParseCompilationUnitTest/generated

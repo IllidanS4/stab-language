@@ -598,7 +598,7 @@ package stab.reflection {
             private MethodInfoBuilder methodInfoBuilder;
 
             OutlineVisitor(ClassFileType classFileType)
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
                 this.classFileType = classFileType;
                 this.fieldInfoBuilder = new FieldInfoBuilder();
                 this.methodInfoBuilder = new MethodInfoBuilder();
@@ -728,7 +728,7 @@ package stab.reflection {
             RawFieldInfo field;
 
             public FieldInfoBuilder()
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
             }
 
             public override AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -748,7 +748,7 @@ package stab.reflection {
             RawMethodInfo method;
 
             public MethodInfoBuilder()
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
             }
             
             public override AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -801,7 +801,7 @@ package stab.reflection {
             private RawArrayValue array;
             
             ArrayVisitor(RawArrayValue array)
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
                 this.array = array;
             }
 
@@ -832,7 +832,7 @@ package stab.reflection {
             private RawAnnotationValue annotation;
             
             RawAnnotationValueBuilder(RawAnnotationValue annotation)
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
                 this.annotation = annotation;
             }
             
@@ -863,7 +863,7 @@ package stab.reflection {
             private RawMethodInfo method;
             
             public RawAnnotationDefaultValueBuilder(RawMethodInfo method)
-                    : super(Opcodes.ASM5) {
+                    : super(Opcodes.ASM8) {
                 this.method = method;
             }
 

@@ -140,6 +140,8 @@ package stab.tools.compiler {
             var typeSystem = this.TypeFinder.TypeSystem;
             var members = scope.memberInfos;
             foreach (var s in this.TypeFinder.getClasses("")) {
+                if ("module-info".equals(s)) continue;
+                if ("package-info".equals(s)) continue;
                 var t = typeSystem.getType(s);
                 members[s] = MemberInfo.getInfo(t);
                 addExtensionMethods(t);
@@ -157,6 +159,8 @@ package stab.tools.compiler {
             var currentPackage = getCurrentPackage();
             var members = scope.memberInfos;
             foreach (var s in this.TypeFinder.getClasses(packages)) {
+                if ("module-info".equals(s)) continue;
+                if ("package-info".equals(s)) continue;
                 var t = typeSystem.getType(currentPackage + '/' + s);
                 members[s] = MemberInfo.getInfo(t);
                 addExtensionMethods(t);
@@ -235,6 +239,8 @@ package stab.tools.compiler {
                     if (scope.ambiguousTypes != null && scope.ambiguousTypes.contains(s)) {
                         continue;
                     }
+                    if ("module-info".equals(s)) continue;
+                    if ("package-info".equals(s)) continue;
                     var t = typeSystem.getType(p + '/' + s);
                     var mi = MemberInfo.getInfo(t);
                     if (mi.IsPublic) {

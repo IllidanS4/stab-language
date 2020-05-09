@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://repository.ow2.org/nexus/'
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation "org.ow2.asm:asm:8.0.1"
+    implementation files("$projectDir/../bin/stabal.jar", "$projectDir/../bin/stabrt.jar", "$projectDir/../bin/stabc.jar")
+    System.out.println(new File("$projectDir/bin/stabrt.jar").getAbsolutePath())
+}

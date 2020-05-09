@@ -526,6 +526,11 @@ package stab.reflection {
             if (!rtJarFile.exists()) {
                 // Probably Mac OS
                 rtJarFile = new File(javaHome.getParent(), "Classes/classes.jar");
+                if (!rtJarFile.exists()) {
+                    //throw new IllegalStateException("Could not find runtime library");
+                    System.out.println("WARNING: Could not find runtime library. Stuff probably won't work.");
+                    return;
+                }
             }
 
 			exploreJarFile(new ZipFile(rtJarFile));

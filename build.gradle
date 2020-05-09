@@ -1,0 +1,12 @@
+import gigaherz.gradle.stab.StabPlugin
+
+project(":runtime") {
+    apply plugin: StabPlugin
+
+    sourceSets {
+        main {
+            stab {
+            }
+        }
+    }
+}
