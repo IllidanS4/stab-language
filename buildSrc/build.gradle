@@ -10,6 +10,9 @@ repositories {
 dependencies {
     implementation gradleApi()
     implementation "org.ow2.asm:asm:8.0.1"
-    implementation files("$projectDir/../bin/stabal.jar", "$projectDir/../bin/stabrt.jar", "$projectDir/../bin/stabc.jar")
-    System.out.println(new File("$projectDir/bin/stabrt.jar").getAbsolutePath())
+    implementation files(
+            project.file("../bin/stabal.jar").getAbsoluteFile(),
+            project.file("../bin/stabrt.jar").getAbsoluteFile(),
+            project.file("../bin/stabc.jar").getAbsoluteFile()
+    )
 }

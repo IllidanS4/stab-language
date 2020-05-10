@@ -1,2 +1,0 @@
-Lambda( => (Name(x) Add Literal(DecimalInteger, [1]));
-)

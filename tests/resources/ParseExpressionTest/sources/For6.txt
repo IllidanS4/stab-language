@@ -1,4 +1,0 @@
-() => {
-	for (i = 0, j = "x"; i < j.Length; i += j.Length) {
-	}
-}

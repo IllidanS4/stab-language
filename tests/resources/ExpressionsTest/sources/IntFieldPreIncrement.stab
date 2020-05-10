@@ -1,9 +1,0 @@
-public class IntFieldPreIncrement {
-	private int field;
-
-	public static boolean test() {
-		var obj = new IntFieldPreIncrement();
-		int i = ++obj.field;
-		return obj.field == i;
-	}
-}

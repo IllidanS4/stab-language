@@ -1,2 +1,0 @@
-Lambda(p => Name(p);
-)

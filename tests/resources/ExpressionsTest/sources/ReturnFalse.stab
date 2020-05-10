@@ -1,5 +1,0 @@
-public class ReturnFalse {
-	public static boolean test() {
-		return false;
-	}
-}

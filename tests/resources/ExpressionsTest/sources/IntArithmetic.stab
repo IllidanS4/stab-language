@@ -1,6 +1,0 @@
-public class IntArithmetic {
-	public static boolean test() {
-		int v = 0xffffffff;
-		return ++v == 0;
-	}
-}

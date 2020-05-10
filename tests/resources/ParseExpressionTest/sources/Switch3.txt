@@ -1,8 +1,0 @@
-() => {
-	switch (m<int>()) {
-	case 1:
-		break;
-	default:
-		return;
-	}
-}

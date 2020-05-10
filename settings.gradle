@@ -1,2 +1,5 @@
 rootProject.name = 'stab'
+
+include 'annotated'
 include 'runtime'
+include 'compiler'

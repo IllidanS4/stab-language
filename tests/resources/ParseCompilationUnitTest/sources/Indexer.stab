@@ -1,8 +1,0 @@
-class C {
-    int[] t;
-    int this[int i] {
-        get {
-            return t[i];
-        }
-    }
-}

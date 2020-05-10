@@ -1,5 +1,0 @@
-Lambda( => {
-var x = Literal(String, ["XXX"]), y = Literal(String, ["YYY"]);
-return((Name(x) Add Name(y)));
-}
-)

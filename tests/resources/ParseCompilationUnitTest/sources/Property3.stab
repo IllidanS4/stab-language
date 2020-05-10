@@ -1,8 +1,0 @@
-class C {
-    int prop;
-    int Prop {
-        set {
-            prop = value;
-        }
-    }
-}

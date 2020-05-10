@@ -1,4 +1,0 @@
-() => {
-	var x = "XXX", y = "YYY";
-	return x + y;
-}

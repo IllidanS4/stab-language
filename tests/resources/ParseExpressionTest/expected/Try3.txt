@@ -1,9 +1,0 @@
-Lambda( => {
-try {
-}
-catch (Exception e) {
-}
-finally {
-}
-}
-)

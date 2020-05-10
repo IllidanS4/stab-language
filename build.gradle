@@ -1,7 +1,57 @@
 import gigaherz.gradle.stab.StabPlugin
 
-project(":runtime") {
+plugins {
+    // Apply the java-library plugin to add support for Java Library
+    id 'java-library'
+}
+
+apply plugin: 'java'
+apply plugin: StabPlugin
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://repository.ow2.org/nexus/'
+    }
+}
+
+dependencies {
+    testImplementation "org.ow2.asm:asm:8.0.1"
+    testImplementation 'junit:junit:4.12'
+}
+
+sourceSets {
+    test {
+        stab {
+        }
+    }
+}
+
+compileTestStab {
+    annotationsClasspath = files()
+}
+
+dependencies {
+    implementation project(':annotated'), project(':runtime'), project(':compiler')
+}
+
+project(":annotated") {
+
+    apply plugin: 'java'
     apply plugin: StabPlugin
+
+    archivesBaseName = 'stabal'
+
+    repositories {
+        jcenter()
+        maven {
+            url 'https://repository.ow2.org/nexus/'
+        }
+    }
+
+    dependencies {
+        implementation "org.ow2.asm:asm:8.0.1"
+    }
 
     sourceSets {
         main {
@@ -9,4 +59,81 @@ project(":runtime") {
             }
         }
     }
+
+    compileStab {
+        stabOptions.includeRuntime true
+        stabOptions.includeDefaultAnnotations false
+        annotationsClasspath = files()
+    }
+
+}
+
+project(":runtime") {
+
+    apply plugin: 'java'
+    apply plugin: StabPlugin
+
+    archivesBaseName = 'stabrt'
+
+    dependencies {
+        implementation project(':annotated')
+    }
+
+    sourceSets {
+        main {
+            stab {
+            }
+        }
+    }
+
+    compileStab {
+        stabOptions.includeRuntime false
+        stabOptions.includeDefaultAnnotations true
+        annotationsClasspath = files()
+    }
+
+}
+
+project(":compiler") {
+
+    apply plugin: 'java'
+    apply plugin: StabPlugin
+
+    archivesBaseName = 'stabc'
+
+    repositories {
+        jcenter()
+        maven {
+            url 'https://repository.ow2.org/nexus/'
+        }
+    }
+
+    dependencies {
+        implementation "org.ow2.asm:asm:8.0.1"
+
+        implementation project(':annotated'), project(':runtime')
+    }
+
+    sourceSets {
+        main {
+            stab {
+            }
+        }
+    }
+
+    compileStab {
+        stabOptions.includeRuntime true
+        stabOptions.includeDefaultAnnotations true
+        annotationsClasspath = files()
+    }
+
+    jar {
+        manifest {
+            attributes([
+                    'Class-Path': 'stabrt.jar asm-8.0.1.jar',
+                    'Main-Class': 'stab.tools.compiler.Application',
+            ])
+        }
+    }
+
 }

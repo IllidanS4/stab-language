@@ -1,5 +1,0 @@
-public class IntDoubleEqual {
-	public static boolean test(int i, double d) {
-		return i == d;
-	}
-}

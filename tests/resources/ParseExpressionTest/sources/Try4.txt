@@ -1,7 +1,0 @@
-() => {
-	try {
-		return 1l;
-	} catch (System.NullReferenceException nre) {
-	} catch {
-	}
-}

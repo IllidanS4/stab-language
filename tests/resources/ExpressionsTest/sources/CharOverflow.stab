@@ -1,6 +1,0 @@
-public class CharOverflow {
-	public static boolean test() {
-		char v = 32767;
-		return ++v == 32768;
-	}
-}

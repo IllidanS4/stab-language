@@ -1,3 +1,0 @@
-from s in names
-where s.Length == 5
-select s.ToUpper()

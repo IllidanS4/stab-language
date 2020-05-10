@@ -1,5 +1,0 @@
-Lambda( => {
-switch ((Name(a)).b()) {
-}
-}
-)

@@ -1,7 +1,0 @@
-Lambda( => {
-for (Condition();
-)
-{
-}
-}
-)

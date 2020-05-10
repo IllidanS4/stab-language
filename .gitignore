@@ -8,9 +8,17 @@
 /buildSrc/build
 /buildSrc/out
 
+/annotated/.gradle
+/annotated/build
+/annotated/out
+
 /runtime/.gradle
 /runtime/build
 /runtime/out
+
+/compiler/.gradle
+/compiler/build
+/compiler/out
 
 /tests/resources/ExpressionTreesTest/generated
 /tests/resources/ParseCompilationUnitTest/generated
@@ -29,3 +37,9 @@
 /eclipse/*.jar
 
 *.iml
+
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build

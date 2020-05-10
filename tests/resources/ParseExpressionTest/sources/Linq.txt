@@ -1,2 +1,0 @@
-from s in names
-select s.ToUpper()

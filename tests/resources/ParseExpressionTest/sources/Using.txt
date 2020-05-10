@@ -1,5 +1,0 @@
-() => {
-	using (var s = new FileStream(@"c:\file.txt")) {
-		s.Read();
-	}
-}

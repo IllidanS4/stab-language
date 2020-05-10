@@ -1,8 +1,0 @@
-using java.lang;
-
-public class LongArithmetic {
-	public static boolean test() {
-		long v = -1;
-		return Long.toHexString(v).equals("ffffffffffffffff");
-	}
-}

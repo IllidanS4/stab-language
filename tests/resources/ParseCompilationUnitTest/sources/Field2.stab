@@ -1,3 +1,0 @@
-class C : B {
-    volatile int i = 1, j = 2;
-}

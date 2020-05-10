@@ -1,5 +1,0 @@
-public class ConstantNot {
-	public static boolean test() {
-		return !false;
-	}
-}

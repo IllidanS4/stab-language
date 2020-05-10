@@ -1,3 +1,0 @@
-query = from n in names
-            join p in people on n equals p.Name into matching
-            select new { Name = n, Count = matching.Count() }

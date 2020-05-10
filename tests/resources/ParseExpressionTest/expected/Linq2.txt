@@ -1,3 +1,0 @@
-from s in Name(names)
-where ((Name(s)).Length Equal Literal(DecimalInteger, [5]))
-select (Name(s)).ToUpper()

@@ -1,5 +1,0 @@
-() => {
-	synchronized (lock) {
-		lock.x = y;
-	}
-}
