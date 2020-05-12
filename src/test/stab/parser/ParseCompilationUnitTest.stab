@@ -1591,7 +1591,7 @@ package stab.tools.parser.test {
 			for (int i = 0; i < sizeof(text); i++) {
 				text[i] = ' ';
 			}
-			return text.toString();
+			return new String(text);
 		}
 	}
 }
