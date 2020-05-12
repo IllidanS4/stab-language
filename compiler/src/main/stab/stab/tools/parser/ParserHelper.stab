@@ -53,7 +53,7 @@ package stab.tools.parser {
             return result;
         }
 
-        public static char unescapeChar(char[] text, int offset, int length) {
+        public static char unescapeChar(CharSequence text, int offset, int length) {
             char result = 0;
             var end = offset + length;
             for (var i = offset; i < end; i++) {
@@ -130,7 +130,7 @@ package stab.tools.parser {
             return result;
         }
     
-        public static String unescapeString(char[] text, int offset, int length) {
+        public static String unescapeString(CharSequence text, int offset, int length) {
             var sb = new StringBuilder();
             var end = offset + length;
             for (var i = offset; i < end; i++) {
@@ -212,7 +212,7 @@ package stab.tools.parser {
             return sb.toString();
         }
 
-        public static String unescapeVerbatimString(char[] text, int offset, int length) {
+        public static String unescapeVerbatimString(CharSequence text, int offset, int length) {
             var sb = new StringBuilder();
             var end = offset + length;
             for (var i = offset; i < end; i++) {
@@ -265,7 +265,7 @@ package stab.tools.parser {
             return Character.isJavaIdentifierPart(c);
         }
 
-        public static void unescapeIdentifier(StringBuilder sb, char[] text, int offset, int length) {
+        public static void unescapeIdentifier(StringBuilder sb, CharSequence text, int offset, int length) {
             var end = offset + length;
             if (text[offset] == '@') {
                 offset++;
@@ -298,7 +298,7 @@ package stab.tools.parser {
             }
         }
         
-        public static String decodeDocumentation(char[] text, int offset, int length) {
+        public static String decodeDocumentation(CharSequence text, int offset, int length) {
             var end = offset + length;
             offset++;
             var sb = new StringBuilder();

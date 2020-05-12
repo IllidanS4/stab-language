@@ -24,7 +24,7 @@ using stab.tools.helpers;
 package stab.reflection.test {
 
 	public class TypeSystemTest {
-		private String bin = System.getProperty("user.dir") + "/tests/tests.jar";
+		private String bin = System.getProperty("user.dir") + "/build/classes/stab/test/";
 		
 		[Test]
 		public void testObjectMethods() {
@@ -109,7 +109,7 @@ package stab.reflection.test {
 			String result = typeToString(typeInfo, "");
 			
 			var userDir = System.getProperty("user.dir");
-			var generatedPath = PathHelper.combine(userDir, "Tests/resources/TypeSystemTest/generated");
+			var generatedPath = PathHelper.combine(userDir, "src/test/resources/TypeSystemTest/generated");
 			var generatedDir = new File(generatedPath);
 			if (!generatedDir.exists()) {
 				generatedDir.mkdir();
@@ -118,7 +118,7 @@ package stab.reflection.test {
 			fileWriter.write(result);
 			fileWriter.close();
 			
-			var expectedPath = PathHelper.combine(userDir, "Tests/resources/TypeSystemTest/expected");
+			var expectedPath = PathHelper.combine(userDir, "src/test/resources/TypeSystemTest/expected");
 			var expectedFile = new File(PathHelper.combine(expectedPath, test + ".txt"));
 			Assert.assertTrue("Expected file not found: " + expectedFile, expectedFile.exists());
 			var fileReader = new FileReader(expectedFile);

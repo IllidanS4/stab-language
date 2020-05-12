@@ -129,7 +129,7 @@ package stab.tools.compiler {
             set;
         }
         
-        char[] Text {
+        CharSequence Text {
             get;
             set;
         }
@@ -197,11 +197,11 @@ package stab.tools.compiler {
         }
         
         String getText(int offset, int length) {
-            return new String(this.Text, offset, length);
+            return this.Text.subSequence(offset, offset+length).toString();
         }
         
         void appendText(StringBuilder sb, int offset, int length) {
-            sb.append(this.Text, offset, length);
+            sb.append(this.Text.subSequence(offset, offset+length));
         }
         
         String getIdentifier(int offset, int length) {

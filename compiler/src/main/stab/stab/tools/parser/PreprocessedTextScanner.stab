@@ -56,7 +56,7 @@ package stab.tools.parser {
             }
         }
         
-        public char[] Text {
+        public CharSequence Text {
             get {
                 return this.PreprocessedText.Text;
             }

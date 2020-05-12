@@ -1,6 +1,8 @@
 package gigaherz.gradle.stab;
 
+import org.gradle.api.GradleException;
 import org.gradle.api.file.FileCollection;
+import org.gradle.api.internal.tasks.compile.CompilationFailedException;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.tasks.CacheableTask;
 import org.gradle.api.tasks.Classpath;
@@ -79,49 +81,92 @@ public class StabCompile extends AbstractCompile
         try {
             CompilerResults results = (new Compiler()).compileFromFiles(parameters, getSource().getFiles().toArray(new File[0]));
 
-            boolean hasErrors = false;
+            int errorCount = 0;
+            int warningCount = 0;
 
             for (CodeError error : results.getErrors())
             {
+                if (!this.getOptions().isWarnings() && error.getLevel() > 0)
+                    continue;
+
+                StringBuilder sb = new StringBuilder();
+
                 String filename = error.getFilename();
                 if (filename != null)
                 {
-                    System.out.print((new File(error.getFilename())).getAbsolutePath());
+                    sb.append((new File(error.getFilename())).getAbsolutePath());
                 }
                 else
                 {
-                    System.out.print("Unknown source");
+                    sb.append("Unknown source");
                 }
 
                 if (error.getLine() > 0)
                 {
-                    System.out.print(":");
-                    System.out.print(error.getLine());
+                    sb.append(":");
+                    sb.append(error.getLine());
                     /*if (error.getColumn() > 0)
                     {
-                        System.out.print(",");
-                        System.out.print(error.getColumn());
+                        sb.append(":");
+                        sb.append(error.getColumn());
                     }*/
 
-                    System.out.print(":");
+                    sb.append(":");
                 }
 
                 if (error.getLevel() == 0)
                 {
-                    hasErrors = true;
-                    System.out.print(" error: ");
+                    sb.append(" error: ");
                 }
                 else
                 {
-                    System.out.print(" warning: ");
+                    sb.append(" warning: ");
                 }
 
-                System.out.print(error.getId());
-                System.out.print(": ");
-                System.out.println(error.getMessage());
+                //sb.append(error.getId());
+                //sb.append(": ");
+                sb.append(error.getMessage());
+
+                if (error.getLevel() == 0)
+                {
+                    errorCount++;
+                    getProject().getLogger().error(sb.toString());
+                }
+                else
+                {
+                    warningCount++;
+                    getProject().getLogger().warn(sb.toString());
+                }
+
             }
 
-            if (!hasErrors)
+            if (errorCount > 0 && warningCount > 0)
+            {
+                if (errorCount > 1 && warningCount > 1)
+                    getProject().getLogger().error("{} errors, {} warnings", errorCount, warningCount);
+                else if (errorCount > 1)
+                    getProject().getLogger().error("{} errors, {} warning", errorCount, warningCount);
+                else if(warningCount > 1)
+                    getProject().getLogger().error("{} error, {} warnings", errorCount, warningCount);
+                else
+                    getProject().getLogger().error("{} error, {} warning", errorCount, warningCount);
+            }
+            else if(errorCount > 0)
+            {
+                if (errorCount > 1)
+                    getProject().getLogger().error("{} errors", errorCount);
+                else
+                    getProject().getLogger().error("{} error", errorCount);
+            }
+            else if(warningCount > 0)
+            {
+                if (warningCount > 1)
+                    getProject().getLogger().warn("{} warnings", warningCount);
+                else
+                    getProject().getLogger().warn("{} warning", warningCount);
+            }
+
+            if (errorCount == 0)
             {
                 File outputPath = getDestinationDir();
 
@@ -141,6 +186,10 @@ public class StabCompile extends AbstractCompile
                         s.write(e.getValue());
                     }
                 }
+            }
+            else
+            {
+                throw new CompilationFailedException();
             }
         }
         catch (TypeLoadException e)

@@ -96,7 +96,7 @@ package stab.tools.syntaxtree {
         private ExpressionTranslator expressionTranslator;
         int transparentIdentifierCount;
     
-        public QueryTranslator(char[] text)
+        public QueryTranslator(CharSequence text)
             : super(true) {
             this.expressionTranslator = new ExpressionTranslator(text, this);
         }
@@ -259,9 +259,9 @@ package stab.tools.syntaxtree {
         
         private class ExpressionTranslator : ExpressionHandler<QueryScope, ExpressionNode> {
             private QueryTranslator statementTranslator;
-            private char[] text;
+            private CharSequence text;
             
-            ExpressionTranslator(char[] text, QueryTranslator statementTranslator)
+            ExpressionTranslator(CharSequence text, QueryTranslator statementTranslator)
                 : super(true) {
                 this.statementTranslator = statementTranslator;
                 this.text = text;
@@ -390,7 +390,7 @@ package stab.tools.syntaxtree {
                 var from = query.From;
                 from.Origin = handleExpression(from.Origin, scope, true);
                 var body = query.Body;
-                var name = new String(text, from.NameOffset, from.NameLength);
+                var name = text.subSequence(from.NameOffset, from.NameOffset+from.NameLength).toString();
                 var result = translateQuery(scope, from.Type, from.NameOffset, from.NameLength, name, from.Origin, body);
 				result.addUserData(query);
 				return result;
@@ -443,7 +443,7 @@ package stab.tools.syntaxtree {
                             copyNodeInfos(clause, lambda);
                             var joinOffset = joinClause.NameOffset;
                             var joinLength = joinClause.NameLength;
-                            var name2 = new String(text, joinOffset, joinLength);
+                            var name2 = text.subSequence(joinOffset, joinOffset+joinLength).toString();
                             param = new ParameterNode { Name = name2, NameOffset = joinOffset, NameLength = joinLength };
                             copyNodeInfos(clause, param);
                             lambda.Parameters.add(param);
@@ -453,7 +453,7 @@ package stab.tools.syntaxtree {
                             var resultOffset = joinClause.ResultOffset;
                             var resultLength = joinClause.ResultLength;
                             if (isGroupJoin) {
-                                name3 = new String(text, resultOffset, resultLength);
+                                name3 = text.subSequence(resultOffset, resultOffset + resultLength).toString();
                             }
                             
                             lambda = new LambdaExpressionNode();
@@ -478,7 +478,7 @@ package stab.tools.syntaxtree {
                             } else {
                                 var identifier = "query$id" + statementTranslator.transparentIdentifierCount++;
                                 scope = new QueryScope(identifier, scope);
-                                scope.declareName(name ?? new String(text, nameOffset, nameLength),
+                                scope.declareName(name ?? text.subSequence(nameOffset, nameOffset + nameLength).toString(),
                                         clause.Filename, clause.Line, clause.DisabledWarnings);
                                 if (isGroupJoin) {
                                     scope.declareName(name3, clause.Filename, clause.Line, clause.DisabledWarnings);
@@ -547,7 +547,7 @@ package stab.tools.syntaxtree {
                             lambda.Parameters.add(param);
                             var fromOffset = fromClause.NameOffset;
                             var fromLength = fromClause.NameLength;
-                            var name2 = new String(text, fromOffset, fromLength);
+                            var name2 = text.subSequence(fromOffset, fromOffset + fromLength).toString();
                             param = new ParameterNode { Name = name2, NameOffset = fromOffset, NameLength = fromLength };
                             copyNodeInfos(clause, param);
                             lambda.Parameters.add(param);
@@ -561,7 +561,7 @@ package stab.tools.syntaxtree {
                             } else {
                                 var identifier = "query$id" + statementTranslator.transparentIdentifierCount++;
                                 scope = new QueryScope(identifier, scope);
-                                scope.declareName(name ?? new String(text, nameOffset, nameLength),
+                                scope.declareName(name ?? text.subSequence(nameOffset, nameOffset + nameLength).toString(),
                                         clause.Filename, clause.Line, clause.DisabledWarnings);
                                 scope.declareName(name2, clause.Filename, clause.Line, clause.DisabledWarnings);
                                 
@@ -606,11 +606,11 @@ package stab.tools.syntaxtree {
                             
                             var identifier = "query$id" + statementTranslator.transparentIdentifierCount++;
                             scope = new QueryScope(identifier, scope);
-                            scope.declareName(name ?? new String(text, nameOffset, nameLength),
+                            scope.declareName(name ?? text.subSequence(nameOffset, nameOffset + nameLength).toString(),
                                     clause.Filename, clause.Line, clause.DisabledWarnings);
                             var letOffset = letClause.NameOffset;
                             var letLength = letClause.NameLength;
-                            var name2 = new String(text, letOffset, letLength);
+                            var name2 = text.subSequence(letOffset, letOffset + letLength).toString();
                             scope.declareName(name2, clause.Filename, clause.Line, clause.DisabledWarnings);
                                 
                             var aobj = new AnonymousObjectCreationExpressionNode();
@@ -713,9 +713,9 @@ package stab.tools.syntaxtree {
                             if ((continuation != null || type != null || count > 0) && count == whereAndOrderbyCount) {
                                 if (select.ExpressionKind == ExpressionKind.SimpleName) {
                                     var selectName = (SimpleNameExpressionNode)select;
-                                    var sname = new String(text, selectName.NameOffset, selectName.NameLength);
+                                    var sname = text.subSequence(selectName.NameOffset, selectName.NameOffset + selectName.NameLength).toString();
                                     if (name == null) {
-                                        name = new String(text, nameOffset, nameLength);
+                                        name = text.subSequence(nameOffset, nameOffset + nameLength).toString();
                                     }
                                     if (sname.equals(name)) {
                                         generateSelect = false;
@@ -767,9 +767,9 @@ package stab.tools.syntaxtree {
                         var generateGroup = true;
                         if (group.ExpressionKind == ExpressionKind.SimpleName) {
                             var groupName = (SimpleNameExpressionNode)group;
-                            var gname = new String(text, groupName.NameOffset, groupName.NameLength);
+                            var gname = text.subSequence(groupName.NameOffset, groupName.NameOffset + groupName.NameLength).toString();
                             if (name == null) {
-                                name = new String(text, nameOffset, nameLength);
+                                name = text.subSequence(nameOffset, nameOffset + nameLength).toString();
                             }
                             if (gname.equals(name)) {
                                 generateGroup = false;
@@ -790,7 +790,7 @@ package stab.tools.syntaxtree {
                     
                     if (continuation != null) {
                         type = null;
-                        name = new String(text, continuation.NameOffset, continuation.NameLength);
+                        name = text.subSequence(continuation.NameOffset, continuation.NameOffset + continuation.NameLength).toString();
                         nameOffset = continuation.NameOffset;
                         nameLength = continuation.NameLength;
                         body = continuation.Body;
@@ -824,7 +824,7 @@ package stab.tools.syntaxtree {
                 if (scope == null) {
                     return simpleName;
                 } else {
-                    var name = simpleName.Name ?? new String(text, simpleName.NameOffset, simpleName.NameLength);
+                    var name = simpleName.Name ?? text.subSequence(simpleName.NameOffset, simpleName.NameOffset + simpleName.NameLength).toString();
                     return scope.getQualifiedName(name, simpleName);
                 }
             }

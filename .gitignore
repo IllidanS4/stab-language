@@ -20,11 +20,18 @@
 /compiler/build
 /compiler/out
 
-/tests/resources/ExpressionTreesTest/generated
-/tests/resources/ParseCompilationUnitTest/generated
-/tests/resources/ParseExpressionTest/generated
-/tests/resources/PreprocessorTest/generated
-/tests/resources/QueryTranslatorTest/generated
+/src/test/resources/ExpressionTreesTest/generated
+/src/test/resources/ParseCompilationUnitTest/generated
+/src/test/resources/ParseExpressionTest/generated
+/src/test/resources/PreprocessorTest/generated
+/src/test/resources/QueryTranslatorTest/generated
+/src/test/resources/TypeSystemTest/generated
+/src/test/resources/StatementsTest/generated
+/src/test/resources/ObjectModelTest/generated
+/src/test/resources/LibraryTest/generated
+/src/test/resources/IntegrationTest/generated
+/src/test/resources/ExpressionsTest/generated
+/src/test/resources/TypeBuilderTest/stab/*.class
 
 /annotated/stabal.jar
 /bin/tests.jar

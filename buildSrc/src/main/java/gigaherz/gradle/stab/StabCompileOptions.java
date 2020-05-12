@@ -1,5 +1,6 @@
 package gigaherz.gradle.stab;
 
+import org.gradle.api.tasks.Input;
 import org.gradle.api.tasks.compile.AbstractOptions;
 
 public class StabCompileOptions extends AbstractOptions
@@ -7,6 +8,7 @@ public class StabCompileOptions extends AbstractOptions
     private boolean includeRuntime = true;
     private boolean includeDefaultAnnotations = true;
 
+    @Input
     public boolean getIncludeRuntime()
     {
         return includeRuntime;
@@ -17,6 +19,7 @@ public class StabCompileOptions extends AbstractOptions
         this.includeRuntime = includeRuntime;
     }
 
+    @Input
     public boolean getIncludeDefaultAnnotations()
     {
         return includeDefaultAnnotations;

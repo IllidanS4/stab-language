@@ -29,7 +29,7 @@ class C {
 }
 ";
 			var codeErrorManager = new CodeErrorManager();
-			var preprocessor = new Preprocessor(codeErrorManager, source.toCharArray());
+			var preprocessor = new Preprocessor(codeErrorManager, source);
 			var scanner = new PreprocessedTextScanner(codeErrorManager, preprocessor.preprocess());
 			Assert.assertEquals(LexicalUnit.NewLine, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
@@ -50,7 +50,7 @@ class C {
 }
 ";
 			var codeErrorManager = new CodeErrorManager();
-			var preprocessor = new Preprocessor(codeErrorManager, source.toCharArray());
+			var preprocessor = new Preprocessor(codeErrorManager, source);
 			var scanner = new PreprocessedTextScanner(codeErrorManager, preprocessor.preprocess());
 			Assert.assertEquals(LexicalUnit.NewLine, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
@@ -62,7 +62,7 @@ class C {
 			Assert.assertEquals(LexicalUnit.NewLine, scanner.nextLexicalUnit());
 			scanner.restore(rp);
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
-			Assert.assertEquals("class", new String(scanner.Text, scanner.StartPosition, scanner.EndPosition - scanner.StartPosition));
+			Assert.assertEquals("class", scanner.Text.subSequence(scanner.StartPosition, scanner.EndPosition));
 			Assert.assertEquals(LexicalUnit.Whitespace, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Identifier, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Whitespace, scanner.nextLexicalUnit());
@@ -84,7 +84,7 @@ C {
 }
 ";
 			var codeErrorManager = new CodeErrorManager();
-			var preprocessor = new Preprocessor(codeErrorManager, source.toCharArray());
+			var preprocessor = new Preprocessor(codeErrorManager, source);
 			var scanner = new PreprocessedTextScanner(codeErrorManager, preprocessor.preprocess());
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
 			RestorePoint rp = scanner.createRestorePoint();
@@ -95,7 +95,7 @@ C {
 			Assert.assertEquals(LexicalUnit.NewLine, scanner.nextLexicalUnit());
 			scanner.restore(rp);
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
-			Assert.assertEquals("interface", new String(scanner.Text, scanner.StartPosition, scanner.EndPosition - scanner.StartPosition));
+			Assert.assertEquals("interface", scanner.Text.subSequence(scanner.StartPosition, scanner.EndPosition));
 			Assert.assertEquals(LexicalUnit.NewLine, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Identifier, scanner.nextLexicalUnit());
 			Assert.assertEquals(LexicalUnit.Whitespace, scanner.nextLexicalUnit());

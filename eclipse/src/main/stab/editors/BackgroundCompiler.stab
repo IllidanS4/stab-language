@@ -186,10 +186,10 @@ package stab.tools.eclipse.editors {
 		
 		private class ProgressMonitor : IProgressMonitor {
 			private IProgressMonitor monitor;
-			private char[] text;
+			private CharSequence text;
 			private Highlighter highlighter;
 		
-			ProgressMonitor(IProgressMonitor monitor, char[] text, Highlighter highlighter) {
+			ProgressMonitor(IProgressMonitor monitor, CharSequence text, Highlighter highlighter) {
 				this.monitor = monitor;
 				this.text = text;
 				this.highlighter = highlighter;
@@ -230,12 +230,12 @@ package stab.tools.eclipse.editors {
 		
 		private class HighlightJob : UIJob {
 			private SourceEditor editor;
-			private char[] text;
+			private CharSequence text;
 			private CompilationUnitNode compilationUnit;
 			private Library typeSystem;
 			private Library annotatedTypeSystem;
 		
-			HighlightJob(SourceEditor editor, char[] text, CompilationUnitNode compilationUnit,
+			HighlightJob(SourceEditor editor, CharSequence text, CompilationUnitNode compilationUnit,
 					Library typeSystem, Library annotatedTypeSystem)
 					: super("Semantic Highlight") {
 				this.editor = editor;

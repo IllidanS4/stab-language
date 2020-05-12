@@ -184,15 +184,14 @@ package stab.tools.compiler {
                     while ((read = reader.read(buffer)) != -1) {
                         sb.append(buffer, 0, read);
                     }
-                    
-                    var text = new char[sb.length()];
-                    sb.getChars(0, sizeof(text), text, 0);
-                    if (sizeof(text) > 0) {
-                        if (text[sizeof(text) - 1] == '\u001a') {
-                            text[sizeof(text) - 1] = ' ';
+
+                    if (sb.length() > 0) {
+                        if (sb[sb.length()-1] == '\u001a') {
+                            sb.setCharAt(sb.length()-1, ' ');
                         }
                     }
-                    var preprocessor = new Preprocessor(results.codeErrorManager, text);
+
+                    var preprocessor = new Preprocessor(results.codeErrorManager, sb.toString());
                     preprocessor.Filename = file.getAbsolutePath();
 					preprocessor.Symbols.addAll(parameters.Symbols);
                     

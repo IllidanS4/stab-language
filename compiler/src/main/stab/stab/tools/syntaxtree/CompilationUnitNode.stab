@@ -20,11 +20,11 @@ using java.util;
 package stab.tools.syntaxtree {
 
 	public class CompilationUnitNode : SyntaxNode {
-		public CompilationUnitNode(char[] text) {
+		public CompilationUnitNode(CharSequence text) {
 			this.Text = text;
 		}
 		
-		public char[] Text {
+		public CharSequence Text {
 			get;
 			private set;
 		}

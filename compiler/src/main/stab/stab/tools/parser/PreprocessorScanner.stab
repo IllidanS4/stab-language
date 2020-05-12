@@ -23,11 +23,11 @@ package stab.tools.parser {
         private boolean lineStart;
         private boolean preprocessorLine;
     
-        public PreprocessorScanner(CodeErrorManager codeErrorManager, char[] text)
-            : this(codeErrorManager, text, 0, sizeof(text), 0, 0) {
+        public PreprocessorScanner(CodeErrorManager codeErrorManager, CharSequence text)
+            : this(codeErrorManager, text, 0, text.length(), 0, 0) {
         }
 
-        public PreprocessorScanner(CodeErrorManager codeErrorManager, char[] text, int position, int length, int line, int column)
+        public PreprocessorScanner(CodeErrorManager codeErrorManager, CharSequence text, int position, int length, int line, int column)
             : super(codeErrorManager, text, position, length, line, column) {
             this.lineStart = true;
         }

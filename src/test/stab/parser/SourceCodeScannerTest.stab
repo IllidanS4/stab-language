@@ -22,7 +22,7 @@ package stab.tools.parser.test {
 		[Test]
 		public void keywordTest() {
 			var errorManager = new CodeErrorManager();
-			var scanner = new SourceCodeScanner(errorManager, "class".toCharArray());
+			var scanner = new SourceCodeScanner(errorManager, "class");
 			Assert.assertEquals(LexicalUnit.Keyword, scanner.nextLexicalUnit());
 			Assert.assertEquals(Keyword.Class, scanner.Keyword);
 		}
@@ -30,7 +30,7 @@ package stab.tools.parser.test {
 		[Test]
 		public void integerTest() {
 			var errorManager = new CodeErrorManager();
-			var scanner = new SourceCodeScanner(errorManager, "123".toCharArray());
+			var scanner = new SourceCodeScanner(errorManager, "123");
 			Assert.assertEquals(LexicalUnit.DecimalIntegerLiteral, scanner.nextLexicalUnit());
 			Assert.assertEquals(3, scanner.EndPosition);
 		}
@@ -38,7 +38,7 @@ package stab.tools.parser.test {
 		[Test]
 		public void integersTest() {
 			var errorManager = new CodeErrorManager();
-			var scanner = new SourceCodeScanner(errorManager, "1 3".toCharArray());
+			var scanner = new SourceCodeScanner(errorManager, "1 3");
 			Assert.assertEquals(LexicalUnit.DecimalIntegerLiteral, scanner.nextLexicalUnit());
 			Assert.assertEquals(1, scanner.EndPosition);
 			Assert.assertEquals(LexicalUnit.Whitespace, scanner.nextLexicalUnit());

@@ -3,6 +3,8 @@ import gigaherz.gradle.stab.StabPlugin
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+
+    id "org.jetbrains.intellij" version "0.4.20"
 }
 
 apply plugin: 'java'
@@ -61,11 +63,26 @@ project(":annotated") {
     }
 
     compileStab {
-        stabOptions.includeRuntime true
         stabOptions.includeDefaultAnnotations false
         annotationsClasspath = files()
     }
 
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier.set('javadoc')
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    build.dependsOn sourcesJar, javadocJar
 }
 
 project(":runtime") {
@@ -74,6 +91,13 @@ project(":runtime") {
     apply plugin: StabPlugin
 
     archivesBaseName = 'stabrt'
+
+    repositories {
+        jcenter()
+        maven {
+            url 'https://repository.ow2.org/nexus/'
+        }
+    }
 
     dependencies {
         implementation project(':annotated')
@@ -88,10 +112,25 @@ project(":runtime") {
 
     compileStab {
         stabOptions.includeRuntime false
-        stabOptions.includeDefaultAnnotations true
         annotationsClasspath = files()
     }
 
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier.set('javadoc')
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    build.dependsOn sourcesJar, javadocJar
 }
 
 project(":compiler") {
@@ -122,9 +161,22 @@ project(":compiler") {
     }
 
     compileStab {
-        stabOptions.includeRuntime true
-        stabOptions.includeDefaultAnnotations true
         annotationsClasspath = files()
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        archiveClassifier.set('sources')
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        archiveClassifier.set('javadoc')
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
     }
 
     jar {
@@ -136,4 +188,104 @@ project(":compiler") {
         }
     }
 
+    build.dependsOn sourcesJar, javadocJar
+}
+
+if(false) {
+    project(":eclipse") {
+
+        apply plugin: 'java'
+        apply plugin: StabPlugin
+
+        String qualifier = String.format('%1$tY%1$tm%1$td%1$tH%1$tM', GregorianCalendar.getInstance())
+
+        archivesBaseName = 'stab.tools.eclipse'
+        version = "1.0.0.$qualifier"
+
+        repositories {
+            jcenter()
+            maven {
+                url 'https://repository.ow2.org/nexus/'
+            }
+        }
+
+        dependencies {
+            implementation "org.ow2.asm:asm:8.0.1"
+
+            implementation project(':annotated'), project(':runtime'), project(':compiler')
+
+            compile fileTree(dir: project.file("eclipse/plugins"), include: ['*.jar'])
+        }
+
+        sourceSets {
+            main {
+                stab {
+                }
+            }
+        }
+
+        compileStab {
+            annotationsClasspath = files()
+        }
+
+        jar {
+            manifest {
+                attributes([
+                        "Manifest-Version"                   : "1.0",
+                        "Bundle-ManifestVersion"             : "2",
+                        "Bundle-Name"                        : "${project.archivesBaseName}",
+                        "Bundle-SymbolicName"                : "stab.tools.eclipse; singleton:=true",
+                        "Bundle-Version"                     : project.version,
+                        "Bundle-Activator"                   : "stab.tools.eclipse.Activator",
+                        "Require-Bundle"                     : "org.eclipse.ui, org.eclipse.core.runtime, org.eclipse.ui.editors, org.eclipse.jface.text, org.eclipse.core.resources, org.eclipse.ui.ide, org.eclipse.debug.ui, org.eclipse.ui.console",
+                        "Bundle-ActivationPolicy"            : "lazy",
+                        "Bundle-RequiredExecutionEnvironment": "JavaSE-1.6",
+                        "Bundle-ClassPath"                   : "libs/stabrt.jar, libs/stabc.jar, libs/asm-8.0.1.jar, ."
+                ])
+            }
+        }
+    }
+}
+
+project(":intellij") {
+
+    apply plugin: 'java'
+    apply plugin: StabPlugin
+
+    group 'gigaherz.stab'
+    version '1.0-SNAPSHOT'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        flatDir {
+            dirs project.rootProject.file("deps")
+        }
+        maven {
+            url 'https://www.jetbrains.com/intellij-repository/releases/'
+        }
+    }
+
+    intellij {
+        pluginName "stab.tools.intellij"
+        version "2020.1.1"
+    }
+
+    dependencies {
+        implementation "org.ow2.asm:asm:8.0.1"
+
+        implementation project(':annotated'), project(':runtime'), project(':compiler')
+
+        implementation "com.jetbrains.intellij.idea:ideaIC:2020.1.1"
+
+        implementation "dep:annotations:19.0.0"
+
+        testImplementation group: 'junit', name: 'junit', version: '4.12'
+    }
+
+    patchPluginXml {
+        changeNotes """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+    }
 }

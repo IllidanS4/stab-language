@@ -22,12 +22,12 @@ using stab.tools.helpers;
 package stab.tools.parser {
 
     public class PreprocessedText {
-        PreprocessedText(char[] text, Iterable<InputSectionPart> inputSectionParts) {
+        PreprocessedText(CharSequence text, Iterable<InputSectionPart> inputSectionParts) {
             this.Text = text;
             this.InputSectionParts = inputSectionParts;
         }
 
-        public char[] Text {
+        public CharSequence Text {
             get;
             private set;
         }
@@ -43,7 +43,7 @@ package stab.tools.parser {
         private PreprocessorLexicalUnit lexicalUnit;
         private int[] warnings;
     
-        public Preprocessor(CodeErrorManager codeErrorManager, char[] text) {
+        public Preprocessor(CodeErrorManager codeErrorManager, CharSequence text) {
             this.scanner = new PreprocessorScanner(codeErrorManager, text);
             this.Symbols = new HashSet<String>();
             this.warnings = new int[16];
@@ -58,7 +58,7 @@ package stab.tools.parser {
             }
         }
         
-        public char[] Text {
+        public CharSequence Text {
             get {
                 return scanner.Text;
             }
@@ -216,7 +216,7 @@ package stab.tools.parser {
             if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.WhiteSpace) {
                 int messageOffset = scanner.Position;
                 scanner.scanMessage();
-                smessage = new String(this.Text, messageOffset, scanner.Position - messageOffset);
+                smessage = this.Text.subSequence(messageOffset, scanner.Position).toString();
                 nextLexicalUnit(skippedSection);
             }
             checkNewLine();
@@ -229,7 +229,7 @@ package stab.tools.parser {
             if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.WhiteSpace) {
                 int messageOffset = scanner.Position;
                 scanner.scanMessage();
-                emessage = new String(this.Text, messageOffset, scanner.Position - messageOffset);
+                emessage = this.Text.subSequence(messageOffset, scanner.Position).toString();
                 nextLexicalUnit(skippedSection);
             }
             int line = scanner.Line;
@@ -250,7 +250,7 @@ package stab.tools.parser {
             if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.WhiteSpace) {
                 int messageOffset = scanner.Position;
                 scanner.scanMessage();
-                message = new String(this.Text, messageOffset, scanner.Position - messageOffset);
+                message = this.Text.subSequence(messageOffset, scanner.Position).toString();;
                 nextLexicalUnit(skippedSection);
             }
             int line = scanner.Line;
@@ -273,7 +273,7 @@ package stab.tools.parser {
             case DecimalDigits:
                 int line;
                 try {
-                    line = Integer.parseInt(new String(this.Text, arg1Offset, scanner.Position - arg1Offset));
+                    line = Integer.parseInt(this.Text.subSequence(arg1Offset, scanner.Position).toString());
                 } catch (NumberFormatException e) {
                     throw scanner.error(ParseErrorId.InvalidNumber);
                 }
@@ -281,7 +281,7 @@ package stab.tools.parser {
                 if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.WhiteSpace) {
                     int filenameOffset = scanner.Position;
                     if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.Filename) {
-                        filename = new String(this.Text, filenameOffset + 1, scanner.Position - filenameOffset - 2);
+                        filename = this.Text.subSequence(filenameOffset + 1, scanner.Position - 1).toString();
                         nextLexicalUnit(skippedSection);
                     }
                 }
@@ -355,7 +355,7 @@ package stab.tools.parser {
                 if (nextLexicalUnit(skippedSection) == PreprocessorLexicalUnit.DecimalDigits) {
                     int warning;
                     try {
-                        warning = Integer.parseInt(new String(this.Text, numberOffset, scanner.Position - numberOffset));
+                        warning = Integer.parseInt(this.Text.subSequence(numberOffset, scanner.Position).toString());
                     } catch (NumberFormatException e) {
                         throw scanner.error(ParseErrorId.InvalidNumber);
                     }
@@ -372,7 +372,7 @@ package stab.tools.parser {
                                 throw scanner.error(ParseErrorId.DecimalDigitsExpected);
                             }
                             try {
-                                warning = Integer.parseInt(new String(this.Text, numberOffset, scanner.Position - numberOffset));
+                                warning = Integer.parseInt(this.Text.subSequence(numberOffset, scanner.Position).toString());
                             } catch (NumberFormatException e) {
                                 throw scanner.error(ParseErrorId.InvalidNumber);
                             }
@@ -657,11 +657,11 @@ package stab.tools.parser {
                 }
                 return sb.toString();
             } else {
-                return new String(this.Text, offset, length);
+                return this.Text.subSequence(offset, offset+length).toString();
             }
         }
 
-        private int scanUnicodeEscapeSequence(char[] buffer, int offset) {
+        private int scanUnicodeEscapeSequence(CharSequence buffer, int offset) {
             var result = 0;
             switch (buffer[offset]) {
                 case 'u':

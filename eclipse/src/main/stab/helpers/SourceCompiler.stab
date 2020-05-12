@@ -84,7 +84,7 @@ package stab.tools.eclipse.helpers {
 			set;
 		}
 		
-		public char[] EditedFileText {
+		public CharSequence EditedFileText {
 			get;
 			set;
 		}
@@ -151,7 +151,7 @@ package stab.tools.eclipse.helpers {
 
 	public class SourceCompiler {
 		private SourceCompilerParameters parameters;
-		private char[] buffer;
+		private CharSequence buffer;
 
 		public SourceCompiler() {
 			buffer = new char[0x1000];
@@ -432,8 +432,8 @@ package stab.tools.eclipse.helpers {
 			return results;
 		}
 		
-		private char[] getText(IFile file) {
-			char[] text;
+		private CharSequence getText(IFile file) {
+			CharSequence text;
 			if (parameters.AllFiles.getProjectRelativeName(file).equals(parameters.EditedFileName)) {
 				text = parameters.EditedFileText;
 			} else {
@@ -455,7 +455,7 @@ package stab.tools.eclipse.helpers {
 			return text;
 		}
 		
-		private void parse(IFile file, char[] text, CodeErrorManager errorManager, Map<String, CompilationUnitNode> compilationUnits) {
+		private void parse(IFile file, CharSequence text, CodeErrorManager errorManager, Map<String, CompilationUnitNode> compilationUnits) {
 			var filename = parameters.AllFiles.getProjectRelativeName(file);
 			
 			var preprocessor = new Preprocessor(errorManager, text);

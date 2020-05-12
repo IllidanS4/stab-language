@@ -118,17 +118,17 @@ package stab.tools.syntaxtree.test {
 		
 		private void doTest(String test) {
 			var userDir = System.getProperty("user.dir");
-			var sourcePath = PathHelper.combine(PathHelper.combine(userDir, "tests/resources/QueryTranslatorTest/sources"), test + ".stab");
+			var sourcePath = PathHelper.combine(PathHelper.combine(userDir, "src/test/resources/QueryTranslatorTest/sources"), test + ".stab");
 			var fileReader = new FileReader(sourcePath);
 			var code = readToEnd(fileReader);
-			var text = code.toCharArray();
+			var text = code;
 			translator = new QueryTranslator(text);
 			var parser = new Parser();
 			var scanner = new SourceCodeScanner(new CodeErrorManager(), text);
 			var compilationUnit = parser.parseCompilationUnit(scanner);
 			var result = translate(text, compilationUnit);
 			
-			var generatedPath = PathHelper.combine(userDir, "tests/resources/QueryTranslatorTest/generated");
+			var generatedPath = PathHelper.combine(userDir, "src/test/resources/QueryTranslatorTest/generated");
 			var generatedDir = new File(generatedPath);
 			if (!generatedDir.exists()) {
 				generatedDir.mkdir();
@@ -137,7 +137,7 @@ package stab.tools.syntaxtree.test {
 			fileWriter.write(result);
 			fileWriter.close();
 			
-			var expectedPath = PathHelper.combine(userDir, "tests/resources/QueryTranslatorTest/expected");
+			var expectedPath = PathHelper.combine(userDir, "src/test/resources/QueryTranslatorTest/expected");
 			var expectedFile = new File(PathHelper.combine(expectedPath, test + ".stab"));
 			Assert.assertTrue("Expected file not found: " + expectedFile, expectedFile.exists());
 			fileReader = new FileReader(expectedFile);
@@ -155,7 +155,7 @@ package stab.tools.syntaxtree.test {
 			}
 		}
 		
-		private String translate(char[] text, CompilationUnitNode compilationUnit) {
+		private String translate(CharSequence text, CompilationUnitNode compilationUnit) {
 			translate(compilationUnit.Body);
 			return new CompilationUnitPrinter().print(text, compilationUnit);
 		}

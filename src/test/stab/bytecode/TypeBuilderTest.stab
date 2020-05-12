@@ -228,10 +228,10 @@ package stab.reflection.test {
 		}
 
 		private void saveBytecode(String className, byte[] bytecode) {
-			var generatedPath = PathHelper.combine(System.getProperty("user.dir"), "Tests/resources/TypeBuilderTest/stab");
+			var generatedPath = PathHelper.combine(System.getProperty("user.dir"), "src/test/resources/TypeBuilderTest/stab");
 			var generatedDir = new File(generatedPath);
 			if (!generatedDir.exists()) {
-				generatedDir.mkdir();
+				generatedDir.mkdirs();
 			}
 			var stream = new FileOutputStream(PathHelper.combine(generatedPath, className + ".class"));
 			stream.write(bytecode);

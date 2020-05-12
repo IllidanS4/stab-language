@@ -3,10 +3,9 @@
     <name>Stab Language Support</name>
     <vendor email="gigaherz+stab@gmail.com" url="https://gigaherz.dev">Gigaherz</vendor>
 
-    <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>
+    Adds support for the Stab programming language for the JVM.
+    </description>
 
     <!-- please see https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
