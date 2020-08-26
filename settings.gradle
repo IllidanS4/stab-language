@@ -1,8 +1,0 @@
-rootProject.name = 'stab'
-
-include 'annotated'
-include 'runtime'
-include 'compiler'
-include 'eclipse'
-include 'intellij'
-
