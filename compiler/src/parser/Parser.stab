@@ -3013,6 +3013,16 @@ package stab.tools.parser {
                     nextLexicalUnit(false);
                     break;
 
+                case Object:
+                    result = createTypeExpression(TypeReferenceKind.Object);
+                    nextLexicalUnit(false);
+                    break;
+
+                case String:
+                    result = createTypeExpression(TypeReferenceKind.String);
+                    nextLexicalUnit(false);
+                    break;
+
                 case Sizeof:
                     saveScannerState();
                     if (nextLexicalUnit(true) != LexicalUnit.OpenParenthesis) {
@@ -3792,6 +3802,18 @@ package stab.tools.parser {
 
                 case Float:
                     result = new PrimitiveTypeReferenceNode(TypeReferenceKind.Float) { EndPosition = scanner.EndPosition };
+                    setScannerState(result);
+                    nextLexicalUnit(false);
+                    break;
+
+                case Object:
+                    result = new PrimitiveTypeReferenceNode(TypeReferenceKind.Object) { EndPosition = scanner.EndPosition };
+                    setScannerState(result);
+                    nextLexicalUnit(false);
+                    break;
+
+                case String:
+                    result = new PrimitiveTypeReferenceNode(TypeReferenceKind.String) { EndPosition = scanner.EndPosition };
                     setScannerState(result);
                     nextLexicalUnit(false);
                     break;

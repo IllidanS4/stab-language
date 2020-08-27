@@ -201,8 +201,12 @@ package stab.tools.compiler {
                 return context.TypeSystem.IntType;
             case Long:
                 return context.TypeSystem.LongType;
+            case Object:
+                return context.TypeSystem.ObjectType;
             case Short:
                 return context.TypeSystem.ShortType;
+            case String:
+                return context.TypeSystem.StringType;
             case Void:
                 return context.TypeSystem.VoidType;
             case Wildcard:

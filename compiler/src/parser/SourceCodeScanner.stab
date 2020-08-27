@@ -307,8 +307,25 @@ package stab.tools.parser {
 
             case 'b':
                 switch (advance()) {
+                case 'a':
+                    return scanKeyword("ase", Keyword.Super);
                 case 'o':
-                    return scanKeyword("oolean", Keyword.Boolean);
+                    switch (advance()) {
+                    case 'o':
+                        switch (advance()) {
+                        case 'l':
+                            switch (advance()) {
+                            case 'e':
+                                return scanKeyword("ean", Keyword.Boolean);
+                            default:
+                                return scanKeyword("", Keyword.Boolean);
+                            }
+                        default:
+                            return scanKeyword("", Keyword.None);
+                        }
+                    default:
+                        return scanKeyword("", Keyword.None);
+                    }
                 case 'r':
                     return scanKeyword("reak", Keyword.Break);
                 case 'y':
@@ -390,6 +407,8 @@ package stab.tools.parser {
                     return scanKeyword("num", Keyword.Enum);
                 case 'q':
                     return scanContextualKeyword("quals", Keyword.Equals);
+                case 'x':
+                    return scanKeyword("xtern", Keyword.Native);
                 default:
                     return scanKeyword("", Keyword.None);
                 }
@@ -472,6 +491,8 @@ package stab.tools.parser {
                     default:
                         return scanKeyword("", Keyword.In);
                     }
+                case 's':
+                    return scanKeyword("s", Keyword.Instanceof);
                 default:
                     return scanKeyword("", Keyword.None);
                 }
@@ -497,7 +518,14 @@ package stab.tools.parser {
             case 'n':
                 switch (advance()) {
                 case 'a':
-                    return scanKeyword("ative", Keyword.Native);
+                    switch (advance()) {
+                    case 't':
+                        return scanKeyword("tive", Keyword.Native);
+                    case 'm':
+                        return scanKeyword("mespace", Keyword.Package);
+                    default:
+                        return scanKeyword("", Keyword.None);
+                    }
                 case 'e':
                     return scanKeyword("ew", Keyword.New);
                 case 'u':
@@ -508,6 +536,8 @@ package stab.tools.parser {
 
             case 'o':
                 switch (advance()) {
+                case 'b':
+                    return scanKeyword("bject", Keyword.Object);
                 case 'n':
                     return scanContextualKeyword("n", Keyword.On);
                 case 'r':
@@ -552,12 +582,26 @@ package stab.tools.parser {
                 }
 
             case 'r':
-                return scanKeyword("return", Keyword.Return);
+                switch (advance()) {
+                case 'e':
+                    switch (advance()) {
+                    case 'a':
+                        return scanKeyword("adonly", Keyword.Final);
+                    case 't':
+                        return scanKeyword("turn", Keyword.Return);
+                    default:
+                        return scanKeyword("", Keyword.None);
+                    }
+                default:
+                    return scanKeyword("", Keyword.None);
+                }
 
             case 's':
                 switch (advance()) {
                 case 'e':
                     switch (advance()) {
+                    case 'a':
+                        return scanKeyword("aled", Keyword.Final);
                     case 'l':
                         return scanContextualKeyword("lect", Keyword.Select);
                     case 't':
@@ -579,7 +623,19 @@ package stab.tools.parser {
                             return scanKeyword("", Keyword.None);
                         }
                     case 'r':
-                        return scanKeyword("rictfp", Keyword.Strictfp);
+                        switch (advance()) {
+                        case 'i':
+                            switch (advance()) {
+                            case 'c':
+                                return scanKeyword("ctfp", Keyword.Strictfp);
+                            case 'n':
+                                return scanKeyword("ng", Keyword.String);
+                            default:
+                                return scanKeyword("", Keyword.None);
+                            }
+                        default:
+                            return scanKeyword("", Keyword.None);
+                        }
                     default:
                         return scanKeyword("", Keyword.None);
                     }
