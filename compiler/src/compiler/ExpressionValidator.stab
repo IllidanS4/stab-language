@@ -211,7 +211,7 @@ package stab.tools.compiler {
         
         protected override Void handleArrayInitializer(ArrayInitializerExpressionNode arrayInitializer, TypeInfo targetType, boolean nested) {
             TypeInfo targetElementType = null;
-            if (targetType != null) {
+            if (targetType != null && targetType.IsArray) {
                 targetElementType = targetType.ElementType;
             }
             var type = targetElementType;
