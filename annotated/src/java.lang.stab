@@ -37,4 +37,9 @@ package stab.annotated.java.lang {
 		[IndexerGet]
 		char charAt(int index);
 	}
+
+	public interface AutoCloseable {
+		[Dispose]
+		void close();
+	}
 }
