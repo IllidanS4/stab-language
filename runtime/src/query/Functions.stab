@@ -14,101 +14,183 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+using java.lang;
+
 package stab.query {
 
+	[FunctionalInterface]
 	public interface FunctionT<TResult>           { TResult invoke(); }
+	[FunctionalInterface]
 	public interface FunctionBoolean              { boolean invoke(); }
+	[FunctionalInterface]
 	public interface FunctionInt                  { int invoke(); }
+	[FunctionalInterface]
 	public interface FunctionLong                 { long invoke(); }
+	[FunctionalInterface]
 	public interface FunctionFloat                { float invoke(); }
+	[FunctionalInterface]
 	public interface FunctionDouble               { double invoke(); }
 
+	[FunctionalInterface]
 	public interface FunctionTBoolean<TArgument>  { boolean invoke(TArgument argument); }
+	[FunctionalInterface]
 	public interface FunctionIntBoolean           { boolean invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionLongBoolean          { boolean invoke(long argument); }
+	[FunctionalInterface]
 	public interface FunctionFloatBoolean         { boolean invoke(float argument); }
+	[FunctionalInterface]
 	public interface FunctionDoubleBoolean        { boolean invoke(double argument); }
 
+	[FunctionalInterface]
 	public interface FunctionTInt<TArgument>      { int invoke(TArgument argument); }
+	[FunctionalInterface]
 	public interface FunctionBooleanInt           { int invoke(boolean argument); }
+	[FunctionalInterface]
 	public interface FunctionByteInt              { int invoke(byte argument); }
+	[FunctionalInterface]
 	public interface FunctionIntByte              { byte invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionCharInt              { int invoke(char argument); }
+	[FunctionalInterface]
 	public interface FunctionIntChar              { char invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionShortInt             { int invoke(short argument); }
+	[FunctionalInterface]
 	public interface FunctionIntShort             { short invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionIntInt               { int invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionIntT<TResult>        { TResult invoke(int argument); }
 	
 	public interface FunctionTLong<TArgument>     { long invoke(TArgument argument); }
+	[FunctionalInterface]
 	public interface FunctionIntLong              { long invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionLongInt              { int invoke(long argument); }
+	[FunctionalInterface]
 	public interface FunctionLongLong             { long invoke(long argument); }
+	[FunctionalInterface]
 	public interface FunctionLongT<TResult>       { TResult invoke(long argument); }
 
+	[FunctionalInterface]
 	public interface FunctionTFloat<TArgument>    { float invoke(TArgument argument); }
+	[FunctionalInterface]
 	public interface FunctionIntFloat             { float invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionLongFloat            { float invoke(long argument); }
+	[FunctionalInterface]
 	public interface FunctionFloatFloat           { float invoke(float argument); }
+	[FunctionalInterface]
 	public interface FunctionFloatT<TResult>      { TResult invoke(float argument); }
 
+	[FunctionalInterface]
 	public interface FunctionTDouble<TArgument>   { double invoke(TArgument argument); }
+	[FunctionalInterface]
 	public interface FunctionIntDouble            { double invoke(int argument); }
+	[FunctionalInterface]
 	public interface FunctionDoubleInt            { int invoke(double argument); }
+	[FunctionalInterface]
 	public interface FunctionLongDouble           { double invoke(long argument); }
+	[FunctionalInterface]
 	public interface FunctionFloatDouble          { double invoke(float argument); }
+	[FunctionalInterface]
 	public interface FunctionDoubleDouble         { double invoke(double argument); }
+	[FunctionalInterface]
 	public interface FunctionDoubleT<TResult>     { TResult invoke(double argument); }
 
+	[FunctionalInterface]
 	public interface FunctionTT<TArgument, TResult> { TResult invoke(TArgument argument); }
 
+	[FunctionalInterface]
 	public interface FunctionTIntBoolean<TArgument>  { boolean invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntBoolean           { boolean invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntBoolean          { boolean invoke(long argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatIntBoolean         { boolean invoke(float argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionDoubleIntBoolean        { boolean invoke(double argument1, int argument2); }
 
+	[FunctionalInterface]
 	public interface FunctionTIntInt<TArgument>           { int invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionBooleanIntInt                { int invoke(boolean argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionByteIntInt                   { int invoke(byte argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionShortIntInt                  { int invoke(short argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionCharIntInt                   { int invoke(char argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntInt                    { int invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntInt                   { int invoke(long argument1, int argument2); }
 
+	[FunctionalInterface]
 	public interface FunctionIntIntT<TResult>             { TResult invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntT<TResult>            { TResult invoke(long argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatIntT<TResult>           { TResult invoke(float argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionDoubleIntT<TResult>          { TResult invoke(double argument1, int argument2); }
 
+	[FunctionalInterface]
 	public interface FunctionIntIntByte                   { byte invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntChar                   { char invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntDouble                 { double invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntFloat                  { float invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntLong                   { long invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionIntIntShort                  { short invoke(int argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntDouble                { double invoke(long argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntFloat                 { float invoke(long argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongIntLong                  { long invoke(long argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongLongLong                 { long invoke(long argument1, long argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatFloatFloat              { float invoke(float argument1, float argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatIntDouble               { double invoke(float argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatIntFloat                { float invoke(float argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionDoubleDoubleDouble           { double invoke(double argument1, double argument2); }
 
+	[FunctionalInterface]
 	public interface FunctionIntTInt<TArgument>           { int invoke(int argument1, TArgument argument2); }
+	[FunctionalInterface]
 	public interface FunctionTIntLong<TArgument>          { long invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionTIntFloat<TArgument>         { float invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionTIntDouble<TArgument>        { double invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionLongTLong<TArgument>         { long invoke(long argument1, TArgument argument2); }
+	[FunctionalInterface]
 	public interface FunctionFloatTFloat<TArgument>       { float invoke(float argument1, TArgument argument2); }
+	[FunctionalInterface]
 	public interface FunctionDoubleTDouble<TArgument>     { double invoke(double argument1, TArgument argument2); }
 	
+	[FunctionalInterface]
 	public interface FunctionTIntT<TArgument, TResult>    { TResult invoke(TArgument argument1, int argument2); }
+	[FunctionalInterface]
 	public interface FunctionTLongT<TArgument, TResult>   { TResult invoke(TArgument argument1, long argument2); }
+	[FunctionalInterface]
 	public interface FunctionTFloatT<TArgument, TResult>  { TResult invoke(TArgument argument1, float argument2); }
+	[FunctionalInterface]
 	public interface FunctionTDoubleT<TArgument, TResult> { TResult invoke(TArgument argument1, double argument2); }
 
+	[FunctionalInterface]
 	public interface FunctionTTT<TArgument1, TArgument2, TResult> { TResult invoke(TArgument1 argument1, TArgument2 argument2); }
 
 }
