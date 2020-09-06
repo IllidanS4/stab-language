@@ -195,6 +195,7 @@ package stab.tools.compiler {
 		LambdaOutsideMethod,
 		AbstractMemberInClass,
         InconsistentBaseTypeAccessibility,
+        InternalCompilerError,
 	}
 
     class Resources {

@@ -77,6 +77,11 @@ package stab.tools.helpers {
 			this.errors = new ArrayList<CodeError>();
 			this.errorsByScope = new boolean[16];
 		}
+    
+		public boolean AddStackTrace {
+			get;
+			set;
+		}
 	
 		public Iterable<CodeError> Errors {
 			get {
@@ -140,11 +145,20 @@ package stab.tools.helpers {
 		}
 	
 		public void addError(String filename, int id, int level, String message, int line, int column) {
+			addError(filename, id, level, message, line, column, this.AddStackTrace);
+		}
+	
+		public void addError(String filename, int id, int level, String message, int line, int column, boolean addStackTrace) {
 			if (level == 0) {
 				this.errorsByScope[this.scopes] = true;
 			}
 			if (this.scopes == 0) {
 				if (level == 0 || (!disableWarnings && this.DisabledWarnings != null && !this.DisabledWarnings.contains(id))) {
+					if (addStackTrace) {
+						var writer = new java.io.StringWriter();
+						new CodeErrorException().printStackTrace(new java.io.PrintWriter(writer));
+						message += "\n" + writer.toString();
+					}
 					this.errors.add(new CodeError(filename, id, level, message, line, column));
 				}
 			}

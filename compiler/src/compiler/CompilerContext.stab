@@ -281,6 +281,20 @@ package stab.tools.compiler {
             this.Results.codeErrorManager.addError(node.Filename, id.ordinal() + 161, level,
                 Resources.getMessage(id, arguments), node.Line + 1, node.Column + 1);
         }
+        
+        public void addError(Throwable error, SyntaxNode node) {
+        	if (this.IsErrorHandlingDisabled && !this.DisableIgnoredErrorTracking && this.id == null) {
+        		throw error;
+        	}
+            var message = Resources.getMessage(CompileErrorId.InternalCompilerError, node.toString());
+            if (Parameters.DebugInfo) {
+              var writer = new java.io.StringWriter();
+              error.printStackTrace(new java.io.PrintWriter(writer));
+              message += "\n" + writer.toString();
+            }
+            this.Results.codeErrorManager.addError(node.Filename, CompileErrorId.InternalCompilerError.ordinal() + 161, 0,
+                message, node.Line + 1, node.Column + 1, false);
+        }
     }
     
     class CodeValidationContext {

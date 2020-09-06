@@ -53,6 +53,11 @@ package stab.tools.compiler {
             get;
             set;
         }
+        
+        public boolean DebugInfo {
+            get;
+            set;
+        }
 		
 		public Library TypeSystem {
 			get;
@@ -96,8 +101,8 @@ package stab.tools.compiler {
         HashMap<String, byte[]> classFiles;
 		CompilationStage compilationStage;
     
-        public CompilerResults() {
-            this.codeErrorManager = new CodeErrorManager();
+        public CompilerResults(bool addStackTrace) {
+            this.codeErrorManager = new CodeErrorManager() { AddStackTrace = addStackTrace };
             this.classFiles = new HashMap<String, byte[]>();
 			this.compilationStage = CompilationStage.None;
         }
@@ -161,7 +166,7 @@ package stab.tools.compiler {
         }
         
         public CompilerResults compileFromFiles(CompilerParameters parameters, File[] files) {
-            var results = new CompilerResults();
+            var results = new CompilerResults(parameters.DebugInfo);
             this.context = new CompilerContext(parameters, results);
             this.statementValidator = new StatementValidator(this.context);
             this.expressionValidator = new ExpressionValidator(this.context);
@@ -236,7 +241,7 @@ package stab.tools.compiler {
         }
 
         public CompilerResults compileFromCompilationUnits(CompilerParameters parameters, CompilationUnitNode[] compilationUnits) {
-            var results = new CompilerResults();
+            var results = new CompilerResults(parameters.DebugInfo);
             this.context = new CompilerContext(parameters, results);
             this.statementValidator = new StatementValidator(this.context);
             this.expressionValidator = new ExpressionValidator(this.context);

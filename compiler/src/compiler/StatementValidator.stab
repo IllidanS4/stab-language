@@ -39,7 +39,13 @@ package stab.tools.compiler {
             try {
                 context.MemberResolver.enterScope();
                 foreach (var s in block.Statements) {
-                    handleStatement(s, null);
+                    try {
+                        handleStatement(s, null);
+                    } catch (CodeErrorException) {
+                        throw;
+                    } catch (Throwable error) {
+                        context.addError(error, s);
+                    }
                 }
             } finally {
                 context.MemberResolver.leaveScope();
@@ -79,7 +85,13 @@ package stab.tools.compiler {
         }
         
         protected override Void handleExpression(ExpressionStatementNode expression, Void source) {
-            this.ExpressionValidator.handleExpression(expression.Expression, null, false);
+            try {
+                this.ExpressionValidator.handleExpression(expression.Expression, null, false);
+            } catch (CodeErrorException) {
+                throw;
+            } catch (Throwable error) {
+                context.addError(error, expression.Expression);
+            }
             return null;
         }
 

@@ -40,7 +40,7 @@ package stab.tools.compiler {
             Manifest,
             Out,
             Resources,
-            Runtimelib
+            Debuginfo
         }
         
         private class OptionInfo {
@@ -94,7 +94,9 @@ package stab.tools.compiler {
                         Description = "specify output file or directory name (default: base name of the\n\tfirst input file)" },
                 new OptionInfo { Option = Option.Resources, Name = "resources", ShortForm = "res",
                         Arguments = "<directory>",
-                        Description = "specify a directory containing the resources to include in\n\tthe generated jar" }
+                        Description = "specify a directory containing the resources to include in\n\tthe generated jar" },
+                new OptionInfo { Option = Option.Debuginfo, Name = "debuginfo", ShortForm = "dbg",
+                        Description = "enables debug information" },
             };
         
             Options = new HashMap<String, Option>();
@@ -335,6 +337,10 @@ package stab.tools.compiler {
                     resourcesPath = parameter;
                     break;
                 }
+                case Debuginfo: {
+                    parameters.DebugInfo = true;
+                    break;
+                }
                 case Help: {
                     System.out.println("    Stab Compiler Options");
                     System.out.println();
@@ -356,7 +362,7 @@ package stab.tools.compiler {
                         System.out.println();
                         System.out.println();
                     }
-                    break;
+                    return false;
                 }
                 }
                 i++;
@@ -375,7 +381,7 @@ package stab.tools.compiler {
                 i++;
             }
             if (sourceFiles.size() == 0) {
-                System.out.println("Error: No input file");
+                System.out.println("Error: No input file. Use -help for more information.");
                 return false;
             }
             if (outputPath == null) {
