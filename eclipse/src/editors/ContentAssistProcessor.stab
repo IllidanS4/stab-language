@@ -48,7 +48,7 @@ package stab.tools.eclipse.editors {
 		private int offset;
 		private int tokenIndex;
 		private Token token;
-		private CharSequence text;
+		private char[] text;
 		private List<Token> tokens;
 		private ContentAssistContext context;
 		private StatementProcessor statementProcessor;
@@ -65,7 +65,7 @@ package stab.tools.eclipse.editors {
 			return null;
 		}
 		
-		public CharSequence getContextInformationAutoActivationCharacters() {
+		public char[] getContextInformationAutoActivationCharacters() {
 			return null;
 		}
 	
@@ -77,7 +77,7 @@ package stab.tools.eclipse.editors {
 			return null;
 		}
 		
-		public CharSequence getCompletionProposalAutoActivationCharacters() {
+		public char[] getCompletionProposalAutoActivationCharacters() {
 			return null;
 		}
 		
@@ -532,7 +532,7 @@ package stab.tools.eclipse.editors {
 				token = tokens[tokenIndex - 1];
 			}
 			var length = token.length - (offset - token.offset);
-			var prefix = text.subSequence(token.offset, offset);
+			var prefix = new String(text, token.offset, offset - token.offset);
 			return CompletionProposalHelper.createCompletionProposals(offset, length, prefix, context.getRootPackages(),
 					context.getTypeMembers(), TYPE_TEXTS);
 		}
@@ -588,10 +588,10 @@ package stab.tools.eclipse.editors {
 					if (offset == token.offset) {
 						var tk = tokens[tokenIndex - 1];
 						length = 0;
-						prefix = text.subSequence(tk.offset, tk.offset + tk.length);
+						prefix = new String(text, tk.offset, tk.length);
 					} else {
 						length = token.length - (offset - token.offset);
-						prefix = text.subSequence(token.offset, offset);
+						prefix = new String(text, token.offset, offset - token.offset);
 					}
 					Iterable<MemberInfo> typeMembers;
 					if (Type.DeclaringType == null) {
@@ -647,7 +647,7 @@ package stab.tools.eclipse.editors {
 						var tinfo = syntaxNode.getUserData(typeof(ExpressionInfo));
 						if (actualToken.offset < actualOffset) {
 							length = actualToken.length - (actualOffset - actualToken.offset);
-							prefix = text.subSequence(actualToken.offset, actualOffset);
+							prefix = new String(text, actualToken.offset, actualOffset - actualToken.offset);
 						}
 						return CompletionProposalHelper.createCompletionProposals(actualOffset, length, prefix, Query.empty<String>(),
 								context.getMembers(tinfo.Type, tinfo.Member != null && tinfo.Member.MemberKind == MemberKind.Type),
@@ -662,9 +662,9 @@ package stab.tools.eclipse.editors {
 					case ContextualKeyword:
 						if (actualToken.offset < actualOffset) {
 							length = actualToken.length - (actualOffset - actualToken.offset);
-							prefix = text.subSequence(actualToken.offset, actualOffset);
+							prefix = new String(text, actualToken.offset, actualOffset - actualToken.offset);
 						}
-						var text = text.subSequence(tk.offset, tk.offset + tk.length);
+						var text = new String(text, tk.offset, tk.length);
 						return CompletionProposalHelper.createCompletionProposals(actualOffset, length, prefix, Query.empty<String>(),
 								context.getMembers(text), Query.empty<String>());
 					}
@@ -680,8 +680,8 @@ package stab.tools.eclipse.editors {
 						case Identifier:
 						case Keyword:
 						case ContextualKeyword:
-							prefix = text.subSequence(tk2.offset, actualOffset).toString();
-							var text = text.subSequence(tk.offset, tk.offset + tk.length);
+							prefix = new String(text, tk2.offset, actualOffset - tk2.offset);
+							var text = new String(text, tk.offset, tk.length);
 							return CompletionProposalHelper.createCompletionProposals(actualOffset, length, prefix, Query.empty<String>(),
 									context.getMembers(text), Query.empty<String>());
 						}
@@ -699,7 +699,7 @@ package stab.tools.eclipse.editors {
 			case Keyword:
 			case ContextualKeyword:
 				length = token.length - (actualOffset - token.offset);
-				prefix = text.subSequence(token.offset, actualOffset);
+				prefix = new String(text, token.offset, actualOffset - token.offset);
 				break;
 			}
 			if (expression) {
@@ -729,7 +729,7 @@ package stab.tools.eclipse.editors {
 			case Keyword:
 			case ContextualKeyword:
 				length = token.length - (actualOffset - token.offset);
-				prefix = text.subSequence(token.offset, actualOffset);
+				prefix = new String(text, token.offset, actualOffset - token.offset);
 				break;
 			}
 			return CompletionProposalHelper.createCompletionProposals(actualOffset, length, prefix,
@@ -1315,7 +1315,7 @@ package stab.tools.eclipse.editors {
 						token = processor.tokens[index - 1];
 					}
 					var length = token.length - (processor.offset - token.offset);
-					var prefix = processor.text.subSequence(token.offset, processor.offset);
+					var prefix = new String(processor.text, token.offset, processor.offset - token.offset);
 					var tinfo = memberAccess.TargetObject.getUserData(typeof(ExpressionInfo));
 					return CompletionProposalHelper.createCompletionProposals(processor.offset, length, prefix, Query.empty<String>(),
 							processor.context.getMembers(tinfo.Type, tinfo.Member != null && tinfo.Member.MemberKind == MemberKind.Type),
