@@ -694,7 +694,7 @@ package stab.tools.compiler {
                     throw context.error(CompileErrorId.ReferenceTypeValueExpected, left);
                 }
                 if (rt.IsPrimitive) {
-                    throw context.error(CompileErrorId.ReferenceTypeExpected, right);
+                    rt = ri.Type = context.TypeSystem.getBoxedType(rt);
                 }
                 binary.addOrReplaceUserData(new ExpressionInfo(context.TypeSystem.BooleanType));
                 break;

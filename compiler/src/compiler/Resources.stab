@@ -197,6 +197,7 @@ package stab.tools.compiler {
         InconsistentBaseTypeAccessibility,
         InternalCompilerError,
         NotNamedExpression,
+        PrimitiveTypeExpected,
 	}
 
     class Resources {

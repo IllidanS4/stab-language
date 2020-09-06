@@ -33,6 +33,7 @@ package stab.tools.syntaxtree {
 		SimpleName,
 		Qualified,
 		Array,
+		Boxed,
 		Wildcard,
 		UpperBoundedWildcard,
 		LowerBoundedWildcard
@@ -58,6 +59,17 @@ package stab.tools.syntaxtree {
 	public class ArrayTypeReferenceNode : TypeReferenceNode {
 		public ArrayTypeReferenceNode()
 			: super(TypeReferenceKind.Array) {
+		}
+		
+		public TypeReferenceNode ElementType {
+			get;
+			set;
+		}
+	}
+	
+	public class BoxedTypeReferenceNode : TypeReferenceNode {
+		public BoxedTypeReferenceNode()
+			: super(TypeReferenceKind.Boxed) {
 		}
 		
 		public TypeReferenceNode ElementType {

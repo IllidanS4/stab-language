@@ -2602,6 +2602,7 @@ package stab.tools.parser {
             for (;;) {
                 var prec = 0;
                 var doParseType = false;
+                var allowBoxed = true;
                 var op = BinaryOperator.Add;
                 var restorePoint = this.createRestorePoint();
                 switch (lexicalUnit) {
@@ -2691,6 +2692,7 @@ package stab.tools.parser {
                     case Instanceof:
                         prec = 4;
                         doParseType = true;
+                        allowBoxed = false;
                         op = BinaryOperator.Instanceof;
                         break;
 
@@ -2752,7 +2754,7 @@ package stab.tools.parser {
                 var binary = new BinaryExpressionNode { Operator = op, LeftOperand = leftExpression };
                 copyScannerState(leftExpression, binary);
                 if (doParseType) {
-                    var type = new TypeExpressionNode { TypeReference = parseType(true) };
+                    var type = new TypeExpressionNode { TypeReference = parseType(true, !allowBoxed, allowBoxed) };
                     copyScannerState(type.TypeReference, type);
                     type.EndPosition = type.TypeReference.EndPosition;
                     binary.RightOperand = type;
@@ -3585,26 +3587,46 @@ package stab.tools.parser {
         }
 
         private TypeReferenceNode parseType(boolean fail, boolean allowVoid) {
-            var result = parseNonArrayType(fail, allowVoid);
-            if (lexicalUnit != LexicalUnit.OpenBracket) {
-                return result;
-            }
-            var restorePoint = createRestorePoint();
-            if (nextLexicalUnit(false) != LexicalUnit.CloseBracket) {
-                restore(restorePoint);
-                return result;
-            }
-            do {
-                var arrayType = new ArrayTypeReferenceNode();
-                copyScannerState(result, arrayType);
-                arrayType.ElementType = result;
-                result = arrayType;
-                result.EndPosition = scanner.EndPosition;
-                if (nextLexicalUnit(false) != LexicalUnit.OpenBracket) {
+            return parseType(fail, allowVoid, true);
+        }
+
+        private TypeReferenceNode parseType(boolean fail, boolean allowVoid, boolean allowBoxed) {
+            var result = parseNonArrayType(fail);
+            while (true) {
+                switch (lexicalUnit) {
+                case QuestionMark:
+                    if (!allowBoxed) goto default;
+                    var boxedType = new BoxedTypeReferenceNode();
+                    copyScannerState(result, boxedType);
+                    boxedType.ElementType = result;
+                    result = boxedType;
+                    result.EndPosition = scanner.EndPosition;
+                    nextLexicalUnit(false);
+                    break;
+                case OpenBracket:
+                    var restorePoint = createRestorePoint();
+                    if (nextLexicalUnit(false) != LexicalUnit.CloseBracket) {
+                        restore(restorePoint);
+                        goto default;
+                    }
+                    var arrayType = new ArrayTypeReferenceNode();
+                    copyScannerState(result, arrayType);
+                    arrayType.ElementType = result;
+                    result = arrayType;
+                    result.EndPosition = scanner.EndPosition;
+                    nextLexicalUnit(false);
+                    break;
+                default:
+                    if (!allowVoid && result.TypeReferenceKind == TypeReferenceKind.Void) {
+                        if (fail) {
+                            throw error(ParseErrorId.UnexpectedVoid);
+                        } else {
+                            return null;
+                        }
+                    }
                     return result;
                 }
-            } while (nextLexicalUnit(true) == LexicalUnit.CloseBracket);
-            throw error(ParseErrorId.CloseBracketExpected);
+            }
         }
 
         private int parseTypeArguments(List<TypeReferenceNode> typeArguments, boolean primaryExpression, int endPosition) {
@@ -3763,7 +3785,7 @@ package stab.tools.parser {
             return result;
         }
 
-        private TypeReferenceNode parseNonArrayType(boolean fail, boolean allowVoid) {
+        private TypeReferenceNode parseNonArrayType(boolean fail) {
             TypeReferenceNode result;
             switch (lexicalUnit) {
             case Identifier:
@@ -3855,13 +3877,6 @@ package stab.tools.parser {
             default:
                 if (fail) {
                     throw error(ParseErrorId.IdentifierExpected);
-                } else {
-                    return null;
-                }
-            }
-            if (!allowVoid && result.TypeReferenceKind == TypeReferenceKind.Void) {
-                if (fail) {
-                    throw error(ParseErrorId.UnexpectedVoid);
                 } else {
                     return null;
                 }

@@ -217,6 +217,12 @@ package stab.tools.compiler {
                 return resolveTypeReference(context, packageName, ((WildcardTypeReferenceNode)typeReference).Bound).UpperBoundedWildcard;
             case Array:
                 return resolveTypeReference(context, packageName, ((ArrayTypeReferenceNode)typeReference).ElementType).ArrayType;
+            case Boxed:
+                var boxedType = context.TypeSystem.getBoxedType(resolveTypeReference(context, packageName, ((BoxedTypeReferenceNode)typeReference).ElementType));
+                if (boxedType == null) {
+                  throw context.error(CompileErrorId.PrimitiveTypeExpected, typeReference);
+                }
+                return boxedType;
             case SimpleName: {
                 var simpleName = (SimpleNameTypeReferenceNode)typeReference;
                 var name = context.getIdentifier(simpleName.NameOffset, simpleName.NameLength);

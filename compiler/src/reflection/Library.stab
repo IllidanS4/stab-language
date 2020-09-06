@@ -374,38 +374,36 @@ package stab.reflection {
             }
         }
         
+        public TypeInfo getBoxedType(TypeInfo type) {
+            switch (type.TypeKind) {
+            case Boolean:
+                return getType("java/lang/Boolean");
+            case Byte:
+                return getType("java/lang/Byte");
+            case Char:
+                return getType("java/lang/Character");
+            case Short:
+                return getType("java/lang/Short");
+            case Int:
+                return getType("java/lang/Integer");
+            case Long:
+                return getType("java/lang/Long");
+            case Float:
+                return getType("java/lang/Float");
+            case Double:
+                return getType("java/lang/Double");
+            case Void:
+                return getType("java/lang/Void");
+            }
+            return null;
+        }
+        
         public MethodInfo getBoxingMethod(TypeInfo type) {
             ClassFileType ctype = null;
             boolean isBoolean;
             if (type.IsPrimitive) {
-                isBoolean = false;
-                switch (type.TypeKind) {
-                case Boolean:
-                    ctype = (ClassFileType)getType("java/lang/Boolean");
-                    isBoolean = true;
-                    break;
-                case Byte:
-                    ctype = (ClassFileType)getType("java/lang/Byte");
-                    break;
-                case Char:
-                    ctype = (ClassFileType)getType("java/lang/Character");
-                    break;
-                case Short:
-                    ctype = (ClassFileType)getType("java/lang/Short");
-                    break;
-                case Int:
-                    ctype = (ClassFileType)getType("java/lang/Integer");
-                    break;
-                case Long:
-                    ctype = (ClassFileType)getType("java/lang/Long");
-                    break;
-                case Float:
-                    ctype = (ClassFileType)getType("java/lang/Float");
-                    break;
-                case Double:
-                    ctype = (ClassFileType)getType("java/lang/Double");
-                    break;
-                }
+                isBoolean = type.TypeKind == TypeKind.Boolean;
+                ctype = (ClassFileType)getBoxedType(type);
             } else if (type instanceof ClassFileType) {
                 isBoolean = type.FullName.equals("java/lang/Boolean");
                 if (type.NumericTypeKind == NumericTypeKind.None && !isBoolean) {
@@ -451,34 +449,8 @@ package stab.reflection {
             ClassFileType ctype = null;
             boolean isBoolean;
             if (type.IsPrimitive) {
-                isBoolean = false;
-                switch (type.TypeKind) {
-                case Boolean:
-                    ctype = (ClassFileType)getType("java/lang/Boolean");
-                    isBoolean = true;
-                    break;
-                case Byte:
-                    ctype = (ClassFileType)getType("java/lang/Byte");
-                    break;
-                case Char:
-                    ctype = (ClassFileType)getType("java/lang/Character");
-                    break;
-                case Short:
-                    ctype = (ClassFileType)getType("java/lang/Short");
-                    break;
-                case Int:
-                    ctype = (ClassFileType)getType("java/lang/Integer");
-                    break;
-                case Long:
-                    ctype = (ClassFileType)getType("java/lang/Long");
-                    break;
-                case Float:
-                    ctype = (ClassFileType)getType("java/lang/Float");
-                    break;
-                case Double:
-                    ctype = (ClassFileType)getType("java/lang/Double");
-                    break;
-                }
+                isBoolean = type.TypeKind == TypeKind.Boolean;
+                ctype = (ClassFileType)getBoxedType(type);
             } else if (type instanceof ClassFileType) {
                 isBoolean = type.FullName.equals("java/lang/Boolean");
                 if (type.NumericTypeKind == NumericTypeKind.None && !isBoolean) {
