@@ -14,3 +14,4 @@ Issues ================================
 - check indexers override
 - test that foreach and using variables are read only
 - prevent use of variable declared in a different switch branch
+- (String)(Integer)0 shouldn't be valid
