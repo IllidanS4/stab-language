@@ -2860,20 +2860,20 @@ package stab.tools.compiler {
                     initializer.addUserData(info);
                 } else if (!isStatic) {
                     // TODO: check overloading
-                    MethodInfo base;
+                    MethodInfo @base;
                     if (typeBuilder.IsEnum) {
                         var paramTypes = new ArrayList<TypeInfo> { context.TypeSystem.StringType, context.TypeSystem.IntType };
-                        base = typeBuilder.BaseType.getMethod("<init>", paramTypes);
+                        @base = typeBuilder.BaseType.getMethod("<init>", paramTypes);
                     } else {
-                        base = typeBuilder.getBaseType().getMethod("<init>", Query.empty<TypeInfo>());
+                        @base = typeBuilder.getBaseType().getMethod("<init>", Query.empty<TypeInfo>());
                     }
-                    if (base == null) {
+                    if (@base == null) {
                         context.addError(CompileErrorId.BaseMissingDefaultConstructor,
                             constructorDeclaration,
                             BytecodeHelper.getDisplayName(typeBuilder.BaseType));
                     } else {
                         var info = new ExpressionInfo(typeBuilder.BaseType);
-                        info.Method = base;
+                        info.Method = @base;
                         constructorDeclaration.addUserData(info);
                     }
                 }
