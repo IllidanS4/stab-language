@@ -519,10 +519,22 @@ package stab.tools.parser {
                 switch (advance()) {
                 case 'a':
                     switch (advance()) {
+                    case 'm':
+                        switch (advance()) {
+                        case 'e':
+                            switch (advance()) {
+                            case 's':
+                                return scanKeyword("space", Keyword.Package);
+                            case 'o':
+                                return scanKeyword("of", Keyword.Nameof);
+                            default:
+                                return scanKeyword("", Keyword.None);
+                            }
+                        default:
+                            return scanKeyword("", Keyword.None);
+                        }
                     case 't':
                         return scanKeyword("tive", Keyword.Native);
-                    case 'm':
-                        return scanKeyword("mespace", Keyword.Package);
                     default:
                         return scanKeyword("", Keyword.None);
                     }

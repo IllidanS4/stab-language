@@ -851,6 +851,10 @@ package stab.tools.compiler {
                 return null;
             }
             
+            protected override Void handleNameof(NameofExpressionNode nameofExpression, Void source, boolean nested) {
+                return null;
+            }
+            
             protected override Void handleObjectCreation(ObjectCreationExpressionNode objectCreation, Void source, boolean nested) {
                 foreach (var arg in objectCreation.Arguments) {
                     handleExpression(arg, null, true);
@@ -1253,6 +1257,10 @@ package stab.tools.compiler {
                 
                 protected override Void handleMemberAccess(MemberAccessExpressionNode memberAccess, Void source, boolean nested) {
                     handleExpression(memberAccess.TargetObject, null, true);
+                    return null;
+                }
+            
+                protected override Void handleNameof(NameofExpressionNode nameofExpression, Void source, boolean nested) {
                     return null;
                 }
                 

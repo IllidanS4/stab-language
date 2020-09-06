@@ -196,6 +196,7 @@ package stab.tools.compiler {
 		AbstractMemberInClass,
         InconsistentBaseTypeAccessibility,
         InternalCompilerError,
+        NotNamedExpression,
 	}
 
     class Resources {

@@ -31,6 +31,7 @@ package stab.tools.syntaxtree {
 		Lambda,
 		Literal,
 		MemberAccess,
+		Nameof,
 		ObjectCreation,
 		ObjectInitializer,
 		Query,

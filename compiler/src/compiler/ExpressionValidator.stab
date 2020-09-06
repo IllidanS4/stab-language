@@ -1314,6 +1314,21 @@ package stab.tools.compiler {
             }
             return null;
         }
+
+        protected override Void handleNameof(NameofExpressionNode nameofExpression, TypeInfo targetType, boolean nested) {
+            var expression = nameofExpression.Expression;
+            handleExpression(expression, null, true);
+            switch (expression.ExpressionKind) {
+            case MemberAccess:
+            case SimpleName:
+                break;
+            
+            default:
+                throw context.error(CompileErrorId.NotNamedExpression, nameofExpression);
+            }
+            nameofExpression.addOrReplaceUserData(new ExpressionInfo(null, null));
+            return null;
+        }
         
         protected override Void handleObjectCreation(ObjectCreationExpressionNode objectCreation, TypeInfo targetType, boolean nested) {
             var type = CompilerHelper.resolveTypeReference(context, context.CurrentType.PackageName, objectCreation.Type);

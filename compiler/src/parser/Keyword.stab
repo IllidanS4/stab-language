@@ -57,6 +57,7 @@ package stab.tools.parser {
         Let,
         Long,
         Package,
+        Nameof,
         Native,
         New,
         Null,

@@ -366,6 +366,11 @@ package stab.tools.syntaxtree {
                 return memberAccess;
             }
             
+            protected override ExpressionNode handleNameof(NameofExpressionNode nameofExpression, QueryScope scope, boolean nested) {
+                nameofExpression.Expression = handleExpression(nameofExpression.Expression, scope, nested);
+                return nameofExpression;
+            }
+            
             protected override ExpressionNode handleObjectCreation(ObjectCreationExpressionNode objectCreation, QueryScope scope, boolean nested) {
                 var args = objectCreation.Arguments;
                 var size = args.size();

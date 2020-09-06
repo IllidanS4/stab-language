@@ -2259,6 +2259,27 @@ package stab.tools.compiler {
             return (info == null) ? null : info.Value;
         }
         
+        protected override Object handleNameof(NameofExpressionNode nameofExpr, Boolean negative, boolean nested) {
+            var info = nameofExpr.getUserData(typeof(ExpressionInfo));
+            var expression = nameofExpr.Expression;
+            SimpleNameExpressionNode simpleName;
+            switch (expression.ExpressionKind) {
+            case MemberAccess:
+                simpleName = ((MemberAccessExpressionNode)expression).Member;
+                break;
+            
+            case SimpleName:
+                simpleName = (SimpleNameExpressionNode)expression;
+                break;
+            
+            default:
+                throw new RuntimeException("Internal error: expression has no name");
+            }
+            info.Value = simpleName.Name ?? context.getIdentifier(simpleName.NameOffset, simpleName.NameLength);
+            info.Type = context.TypeSystem.StringType;
+            return info.Value;
+        }
+        
         protected override Object handleUnary(UnaryExpressionNode unary, Boolean negative, boolean nested) {
             var ei = unary.Operand.getUserData(typeof(ExpressionInfo));
             negative = Boolean.FALSE;

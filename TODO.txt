@@ -13,3 +13,4 @@ Issues ================================
 - check that enum constructors are private
 - check indexers override
 - test that foreach and using variables are read only
+- prevent use of variable declared in a different switch branch

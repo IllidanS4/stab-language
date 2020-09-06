@@ -3023,7 +3023,7 @@ package stab.tools.parser {
                     nextLexicalUnit(false);
                     break;
 
-                case Sizeof:
+                case Sizeof: {
                     saveScannerState();
                     if (nextLexicalUnit(true) != LexicalUnit.OpenParenthesis) {
                         throw error(ParseErrorId.OpenParenthesisExpected);
@@ -3039,7 +3039,7 @@ package stab.tools.parser {
                     result.EndPosition = scanner.EndPosition;
                     nextLexicalUnit(false);
                     break;
-                    
+                }
                 case Typeof: {
                     saveScannerState();
                     if (nextLexicalUnit(true) != LexicalUnit.OpenParenthesis) {
@@ -3074,9 +3074,27 @@ package stab.tools.parser {
                     setSavedScannerState(result);
                     break;
                 }
-                case New:
+                case New: {
                     result = parseNewExpression();
                     break;
+                }
+                case Nameof: {
+                    saveScannerState();
+                    if (nextLexicalUnit(true) != LexicalUnit.OpenParenthesis) {
+                        throw error(ParseErrorId.OpenParenthesisExpected);
+                    }
+                    nextLexicalUnit(true);
+                    var nameofExp = new NameofExpressionNode();
+                    setSavedScannerState(nameofExp);
+                    nameofExp.Expression = parseExpression();
+                    result = nameofExp;
+                    if (lexicalUnit != LexicalUnit.CloseParenthesis) {
+                        throw error(ParseErrorId.CloseParenthesisExpected);
+                    }
+                    result.EndPosition = scanner.EndPosition;
+                    nextLexicalUnit(false);
+                    break;
+                }
                 }
                 break;
             }

@@ -532,6 +532,10 @@ package stab.tools.compiler {
                 return AssignmentState.NotAssigned;
             }
             
+            protected override AssignmentState handleNameof(NameofExpressionNode nameofExpr, HashSet<StatementNode> visited, boolean nested) {
+                return AssignmentState.NotAssigned;
+            }
+            
             protected override AssignmentState handleObjectCreation(ObjectCreationExpressionNode objectCreation, HashSet<StatementNode> visited,
                     boolean nested) {
                 foreach (var arg in objectCreation.Arguments) {
