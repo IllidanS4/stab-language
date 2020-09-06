@@ -3050,6 +3050,7 @@ package stab.tools.parser {
                     setSavedScannerState(typeofExp);
                     if (lexicalUnit == LexicalUnit.Keyword && scanner.Keyword == Keyword.Void) {
                         typeofExp.Type = new PrimitiveTypeReferenceNode(TypeReferenceKind.Void);
+                        nextLexicalUnit(true);
                     } else {
                         typeofExp.Type = parseType(true);
                     }
