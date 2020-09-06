@@ -1,7 +1,7 @@
 OUTFILE = stabc.jar
 CLASSPATH = "../bin/asm-8.0.1.jar;../bin/stabrt.jar;../bin/stabal.jar"
 RESOURCES = resources
-SFLAGS = -cp:$(CLASSPATH) -res:$(RESOURCES) -out:$(OUTFILE) -mf:manifest
+SFLAGS = -cp:$(CLASSPATH) -res:$(RESOURCES) -out:$(OUTFILE) -mf:MANIFEST.MF
 SC = java -jar ../bin/stabc.jar
 
 CLASSES = $(wildcard src/*/*.stab)
@@ -12,4 +12,4 @@ classes:
 	$(SC) $(SFLAGS) $(CLASSES)
 
 clean:
-	$(RM) *.class
+	$(RM) $(OUTFILE)

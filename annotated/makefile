@@ -11,4 +11,4 @@ classes:
 	$(SC) $(SFLAGS) $(CLASSES)
 
 clean:
-	$(RM) *.class
+	$(RM) $(OUTFILE)
