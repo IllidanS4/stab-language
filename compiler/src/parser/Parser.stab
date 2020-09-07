@@ -3617,7 +3617,7 @@ package stab.tools.parser {
                     nextLexicalUnit(false);
                     break;
                 default:
-                    if (!allowVoid && result.TypeReferenceKind == TypeReferenceKind.Void) {
+                    if (!allowVoid && result != null && result.TypeReferenceKind == TypeReferenceKind.Void) {
                         if (fail) {
                             throw error(ParseErrorId.UnexpectedVoid);
                         } else {
