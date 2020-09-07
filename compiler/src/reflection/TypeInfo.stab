@@ -350,6 +350,12 @@ package stab.reflection {
             }
         }
         
+        public boolean IsBoxed {
+            get {
+                return !IsPrimitive && (IsNumeric || FullName.equals("java/lang/Boolean"));
+            }
+        }
+        
         public boolean IsCategory2 {
             get {
                 return this.TypeKind == TypeKind.Long || this.TypeKind == TypeKind.Double;
