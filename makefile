@@ -1,7 +1,7 @@
 GITHUBURL = https://github.com/IllidanS4/stab-language
 VERSION = v1.0-beta5
 
-default:
+default: prepare compiler/stabc.jar runtime/stabrt.jar annotated/stabal.jar
 
 bin:
 	mkdir bin
@@ -14,5 +14,14 @@ bin/stab%:
 
 prepare: bin bin/asm-8.0.1.jar bin/stabal.jar bin/stabc.jar bin/stabrt.jar
 
+compiler/stabc.jar:
+	$(MAKE) -C compiler
+
+runtime/stabrt.jar:
+	$(MAKE) -C runtime
+
+annotated/stabal.jar:
+	$(MAKE) -C annotated
+
 clean:
-	$(RM) bin/stabal.jar bin/stabc.jar bin/stabrt.jar
+	$(RM) compiler/stabc.jar runtime/stabrt.jar annotated/stabal.jar
