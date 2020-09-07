@@ -530,8 +530,14 @@ package stab.reflection {
             if (this == declaringType.OriginalTypeDefinition || this == declaringType) {
                 return true;
             }
-            if (!declaringType.IsPublic && !declaringType.PackageName.equals(this.PackageName)) {
-                return false;
+            if (declaringType.DeclaringType != null) {
+                if (!canAccessMember(declaringType.DeclaringType, declaringType.IsNestedPublic, declaringType.IsNestedProtected, declaringType.IsNestedPrivate)) {
+                    return false;
+                }
+            } else {
+                if (!declaringType.IsPublic && !declaringType.PackageName.equals(this.PackageName)) {
+                    return false;
+                }
             }
             var s = this;
             if (!declaringType.isAssignableFrom(s) && !declaringType.OriginalTypeDefinition.isAssignableFrom(s)) {
