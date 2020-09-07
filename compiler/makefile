@@ -6,9 +6,9 @@ SC = java -jar ../bin/stabc.jar
 
 CLASSES = $(wildcard src/*/*.stab)
 
-default: classes
+default: build
 
-classes:
+build:
 	$(SC) $(SFLAGS) $(CLASSES)
 
 clean:

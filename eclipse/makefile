@@ -8,7 +8,7 @@ REPO = http://ftp.gnome.org/mirror/eclipse.org/eclipse/updates/3.6/R-3.6.1-20100
 
 CLASSES = $(wildcard src/*.stab) $(wildcard src/*/*.stab)
 
-default: plugins classes
+default: plugins build
 
 plugins: eclipse/plugins $(PLUGINS)
 
@@ -27,7 +27,9 @@ resources/libs:
 resources/libs/%:
 	cp ../bin/$(notdir $@) $@
 
-classes: resources/libs resources/libs/asm-8.0.1.jar resources/libs/stabal.jar resources/libs/stabc.jar resources/libs/stabrt.jar
+libs: resources/libs resources/libs/asm-8.0.1.jar resources/libs/stabal.jar resources/libs/stabc.jar resources/libs/stabrt.jar
+
+build: libs
 	$(SC) $(SFLAGS) $(CLASSES)
 
 clean:
