@@ -1272,7 +1272,7 @@ package stab.tools.compiler {
                 targetField.setPrivate(true);
             }
 
-            var interfaceMethod = interfaceType.Methods.single();
+            var interfaceMethod = interfaceType.Methods.where(m => m.IsAbstract).single();
             
             // Interface method
             var methodBuilder = typeBuilder.defineMethod(interfaceMethod.Name);

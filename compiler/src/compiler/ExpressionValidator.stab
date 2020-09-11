@@ -1053,7 +1053,7 @@ package stab.tools.compiler {
                 if (BytecodeHelper.isDelegateType(targetType)) {
                     method = targetType.Methods.where(p => p.Name.equals("invoke")).firstOrDefault();
                 } else if (targetType.IsInterface) {
-                    var methods = getAllMethods(targetType);
+                    var methods = getAllAbstractMethods(targetType);
                     if (methods.count() != 1) {
                         throw context.error(CompileErrorId.IncompatibleLambdaInterface, lambda,
                             BytecodeHelper.getDisplayName(targetType), methods.count());
@@ -1067,7 +1067,7 @@ package stab.tools.compiler {
                     if (BytecodeHelper.isDelegateType(typeArg)) {
                         method = typeArg.Methods.where(p => p.Name.equals("invoke")).firstOrDefault();
                     } else if (typeArg.IsInterface) {
-                        var methods = getAllMethods(typeArg);
+                        var methods = getAllAbstractMethods(typeArg);
                         if (methods.count() != 1) {
                             throw context.error(CompileErrorId.IncompatibleLambdaInterface, lambda,
                                 BytecodeHelper.getDisplayName(typeArg), methods.count());
@@ -1182,12 +1182,12 @@ package stab.tools.compiler {
             return null;
         }
         
-        private Iterable<MethodInfo> getAllMethods(TypeInfo interfaceType) {
-            var result = interfaceType.Methods;
+        private Iterable<MethodInfo> getAllAbstractMethods(TypeInfo interfaceType) {
+            var result = interfaceType.Methods.where(m => m.IsAbstract);
             foreach (var i in interfaceType.Interfaces) {
-                result = result.concat(getAllMethods(i));
+                result = result.concat(getAllAbstractMethods(i));
             }
-            return result.distinct().toList();
+            return result.distinct();
         }
 
         protected override Void handleLiteral(LiteralExpressionNode literal, TypeInfo targetType, boolean nested) {
