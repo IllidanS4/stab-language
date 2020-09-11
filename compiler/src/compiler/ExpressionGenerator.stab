@@ -769,6 +769,8 @@ package stab.tools.compiler {
                     var targetTarget = ((MemberAccessExpressionNode)invocation.TargetObject).TargetObject;
                     handleExpression(targetTarget, null, true);
                     BytecodeGenerator.emitGenericCast(context, method.DeclaringType, targetTarget.getUserData(typeof(ExpressionInfo)).Type);
+                } else if (BytecodeHelper.isDelegateType(method.DeclaringType) && method.Name.equals("invoke")) {
+                    handleExpression(invocation.TargetObject, null, true);
                 } else { // SimpleName
                     BytecodeGenerator.emitThisAccess(context, generator);
                 }
