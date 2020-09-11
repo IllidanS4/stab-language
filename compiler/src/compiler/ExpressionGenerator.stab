@@ -861,7 +861,11 @@ package stab.tools.compiler {
         protected override Void handleMemberAccess(MemberAccessExpressionNode memberAccess, TargetLabels labels, boolean nested) {
             var info = memberAccess.getUserData(typeof(ExpressionInfo));
             if (info.Method != null) {
-                emitDelegateCreation(info.Type, info.Method, memberAccess, nested);
+                if (BytecodeHelper.isDelegateType(info.Type)) {
+                    emitDelegateCreation(info.Type, info.Method, memberAccess.TargetObject, nested);
+                } else {
+                    emitInterfaceCreation(info.Type, info.Method, memberAccess.TargetObject, nested);
+                }
                 return null;
             }
             var member = info.Member;
@@ -1027,7 +1031,11 @@ package stab.tools.compiler {
                 if (info.Method != null) {
                     var e = new ThisAccessExpressionNode();
                     e.addUserData(new ExpressionInfo(context.CurrentType));
-                    emitDelegateCreation(info.Type, info.Method, e, nested);
+                    if (BytecodeHelper.isDelegateType(info.Type)) {
+                        emitDelegateCreation(info.Type, info.Method, e, nested);
+                    } else {
+                        emitInterfaceCreation(info.Type, info.Method, e, nested);
+                    }
                 } else {
                     BytecodeGenerator.emitThisAccess(context, generator);
                     emitBoxing(simpleName);

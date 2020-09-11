@@ -1101,7 +1101,7 @@ package stab.tools.compiler {
             } if (BytecodeHelper.isExpressionTreeType(type)) {
                 return getInvokeMethod(type.GenericArguments.first());
             } else {
-                return type.Methods.firstOrDefault();
+                return type.Methods.where(m => m.IsAbstract).firstOrDefault();
             }
         }
         

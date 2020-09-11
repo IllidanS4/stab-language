@@ -1308,8 +1308,15 @@ package stab.tools.compiler {
                 }
                 info.IsSuperCall = memberAccess.TargetObject.ExpressionKind == ExpressionKind.SuperAccess;
                 memberAccess.addOrReplaceUserData(info);
-                if (targetType != null && BytecodeHelper.isDelegateType(targetType)) {
-                    MethodResolver.resolveDelegate(targetType, memberAccess, tinfo, memberAccess);
+                if (targetType != null) {
+                    if (BytecodeHelper.isDelegateType(targetType)) {
+                        MethodResolver.resolveDelegate(targetType, memberAccess, info, memberAccess);
+                    } else if (targetType.IsInterface) {
+                        var methods = getAllAbstractMethods(targetType);
+                        if (methods.count() == 1) {
+                            MethodResolver.resolveDelegate(targetType, memberAccess, info, memberAccess);
+                        }
+                    }
                 }
             }
             return null;
@@ -1541,8 +1548,15 @@ package stab.tools.compiler {
                 }
                 var info = new ExpressionInfo(null) { Members = members };
                 simpleName.addOrReplaceUserData(info);
-                if (targetType != null && BytecodeHelper.isDelegateType(targetType)) {
-                    MethodResolver.resolveDelegate(targetType, simpleName, info, simpleName);
+                if (targetType != null) {
+                    if (BytecodeHelper.isDelegateType(targetType)) {
+                        MethodResolver.resolveDelegate(targetType, simpleName, info, simpleName);
+                    } else if (targetType.IsInterface) {
+                        var methods = getAllAbstractMethods(targetType);
+                        if (methods.count() == 1) {
+                            MethodResolver.resolveDelegate(targetType, simpleName, info, simpleName);
+                        }
+                    }
                 }
             }
             return null;
